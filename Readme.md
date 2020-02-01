@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Алина Глинская](https://up.htmlacademy.ru/javascript/19/user/632459).
-* Наставник: `Неизвестно`.
+* Наставник: [Николай Думчев](https://htmlacademy.ru/profile/nikopol_fw).
 
 ---
 
