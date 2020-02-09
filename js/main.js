@@ -14,37 +14,85 @@ var map = document.querySelector('.map');
 
 var mapPin = document.querySelector('.map__pin');
 
+var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+
 var mapPinsList = document.querySelector('.map__pins');
 
 var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
 var mapWidth = mapPinsList.offsetWidth - mapPin.offsetWidth / 2;
 
-var cards = [
-  {author: {
-    avatar: 'img/avatars/user0' + randomInteger(1, 8) + '.png',
-  },
+var avatarNumbers = ['01', '02', '03', '04', '05', '06', '07', '08'];
 
-  offer: {
-    title: 'Заголовок объявления',
-    address: location.x + ',' + location.y,
-    price: randomInteger(0, 100000),
-    type: arrayRandElement(TYPES),
-    rooms: randomInteger(1, 5),
-    guests: randomInteger(1, 10),
-    checkin: arrayRandElement(CHECKIN),
-    checkout: arrayRandElement(CHECKOUT),
-    features: arrayRandLength(FEATURES),
-    description: 'Описание',
-    photos: arrayRandLength(PHOTOS),
-  },
+var createAdData = function () {
+  var avatar = avatarNumbers.slice();
+  shuffleArray(avatar);
 
-  location: {
-    x: randomInteger(0, mapWidth),
-    y: randomInteger(130, 630),
-  },
+  var features = FEATURES.slice();
+  shuffleArray(features);
+  features.length = randomInteger(1, features.length);
+
+  var addressX = randomInteger(0, 1000);
+
+  var addressY = randomInteger(0, 1000);
+
+  var price = randomInteger(0, 10000);
+
+  var types = TYPES.slice();
+  shuffleArray(types);
+
+  var rooms = randomInteger(1, 5);
+
+  var guests = randomInteger(1, 10);
+
+  var checkin = CHECKIN.slice();
+  shuffleArray(checkin);
+
+  var checkout = CHECKOUT.slice();
+  shuffleArray(checkout);
+
+  var photos = PHOTOS.slice();
+  shuffleArray(photos);
+  photos.length = randomInteger(1, photos.length);
+
+  var coordinateX = randomInteger(0, mapWidth);
+
+  var coordinateY = randomInteger(130, 630);
+
+  return {
+    author: {
+      avatar: 'img/avatars/user' + avatar.pop() + '.png',
+    },
+    offer: {
+      title: 'Заголовок объявления',
+      address: addressX + ',' + addressY,
+      price: price + ' Р/ночь',
+      type: types.pop(),
+      rooms: rooms,
+      guests: guests,
+      checkin: checkin.pop(),
+      checkout: checkout.pop(),
+      features: features,
+      description: 'Описание',
+      photos: photos,
+    },
+    location: {
+      x: coordinateX,
+      y: coordinateY,
+    },
+  };
+};
+
+var createData = function () {
+  var ads = [];
+
+  for (var i = 0; i < 8; i++) {
+    ads.push(createAdData());
   }
-];
+  return ads;
+};
+
+console.log(createData());
 
 map.classList.remove('map--faded');
 
@@ -53,14 +101,20 @@ function randomInteger(min, max) {
   return randomNumber;
 }
 
-function arrayRandElement(array) {
-  var rand = Math.floor(Math.random() * array.length);
-  return array[rand];
-}
+/**
+* Перемешивает переданный массив по методу Фишера-Йетса
+* @param {any[]} arr - массив, который требуется перемешать
+* @return {any[]}
+*/
 
-function arrayRandLength(array) {
-  array.length = randomInteger(1, 6);
-  return array;
+function shuffleArray(arr) {
+  for (var j = arr.length - 1; j > 0; j--) {
+    var rndm = Math.floor(Math.random() * (j + 1));
+    var temp = arr[rndm];
+    arr[rndm] = arr[j];
+    arr[j] = temp;
+  }
+  return arr;
 }
 
 var createCard = function (card) {
@@ -77,8 +131,24 @@ var createCard = function (card) {
   return cardElement;
 };
 
+/*
+var createPin = function (card) {
+  var pinElement = pinTemplate.cloneNode(true);
+  pinElement.querySelector('.map__pin').style.left = '100px;';
+  pinElement.querySelector('img').src = card.author.avatar;
+  pinElement.querySelector('img').alt = card.offer.title;
+  return pinElement;
+};
+
+for (var i = 0; i < 8; i++) {
+  mapPinsList.appendChild(createCard(cards));
+  mapPinsList.appendChild(createPin(cards));
+}
+
+
 var fragment = document.createDocumentFragment();
 for (var i = 0; i < cards.length; i++) {
   fragment.appendChild(createCard(cards[i]));
 }
 mapPinsList.appendChild(fragment);
+*/
