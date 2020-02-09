@@ -83,16 +83,15 @@ var createAdData = function () {
   };
 };
 
-var createData = function () {
+function createData() {
   var ads = [];
-
   for (var i = 0; i < 8; i++) {
     ads.push(createAdData());
   }
   return ads;
-};
+}
 
-console.log(createData());
+var advertisement = (createData());
 
 map.classList.remove('map--faded');
 
@@ -121,7 +120,7 @@ var createCard = function (card) {
   var cardElement = cardTemplate.cloneNode(true);
   cardElement.querySelector('.popup__title').textContent = card.offer.title;
   cardElement.querySelector('.popup__text--address').textContent = card.offer.address;
-  cardElement.querySelector('.popup__text--price').textContent = card.offer.price + ' Р/ночь';
+  cardElement.querySelector('.popup__text--price').textContent = card.offer.price;
   cardElement.querySelector('.popup__type').textContent = card.offer.type;
   cardElement.querySelector('.popup__text--capacity').textContent = card.offer.rooms + ' комнат для ' + card.offer.guests + ' гостей';
   cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + card.offer.checkin + ', выезд до ' + card.offer.checkout;
@@ -131,24 +130,18 @@ var createCard = function (card) {
   return cardElement;
 };
 
-/*
 var createPin = function (card) {
   var pinElement = pinTemplate.cloneNode(true);
-  pinElement.querySelector('.map__pin').style.left = '100px;';
-  pinElement.querySelector('img').src = card.author.avatar;
+  pinElement.querySelector('.map__pin');
+  pinElement.querySelector('img');
   pinElement.querySelector('img').alt = card.offer.title;
   return pinElement;
 };
 
-for (var i = 0; i < 8; i++) {
-  mapPinsList.appendChild(createCard(cards));
-  mapPinsList.appendChild(createPin(cards));
-}
-
-
 var fragment = document.createDocumentFragment();
-for (var i = 0; i < cards.length; i++) {
-  fragment.appendChild(createCard(cards[i]));
+for (var i = 0; i < advertisement.length; i++) {
+  fragment.appendChild(createCard(advertisement[i]));
 }
 mapPinsList.appendChild(fragment);
-*/
+
+mapPinsList.appendChild(createPin());
