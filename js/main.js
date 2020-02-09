@@ -130,18 +130,20 @@ var createCard = function (card) {
   return cardElement;
 };
 
-var createPin = function (card) {
+var createPin = function () {
   var pinElement = pinTemplate.cloneNode(true);
-  pinElement.querySelector('.map__pin');
-  pinElement.querySelector('img');
-  pinElement.querySelector('img').alt = card.offer.title;
+  pinElement.querySelector('.map__pin').style.left = location.x + 'px;';
+  pinElement.querySelector('.map__pin').style.top = location.y + 'px;';
+  pinElement.querySelector('img').src = author.avatar;
+  pinElement.querySelector('img').alt = offer.title;
   return pinElement;
 };
+
+var pins = createPin();
+console.log(pins);
 
 var fragment = document.createDocumentFragment();
 for (var i = 0; i < advertisement.length; i++) {
   fragment.appendChild(createCard(advertisement[i]));
 }
 mapPinsList.appendChild(fragment);
-
-mapPinsList.appendChild(createPin());
