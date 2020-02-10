@@ -12,7 +12,7 @@ var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.g
 
 var map = document.querySelector('.map');
 
-var mapPin = document.querySelector('.map__pin');
+var mapPinMain = document.querySelector('.map__pin--main');
 
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
@@ -20,7 +20,7 @@ var mapPinsList = document.querySelector('.map__pins');
 
 var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
-var mapWidth = mapPinsList.offsetWidth - mapPin.offsetWidth / 2;
+var mapWidth = mapPinsList.offsetWidth - mapPinMain.offsetWidth / 2;
 
 var avatarNumbers = ['01', '02', '03', '04', '05', '06', '07', '08'];
 
@@ -83,6 +83,8 @@ var createAdData = function () {
   };
 };
 
+var advertisement = (createData());
+
 function createData() {
   var ads = [];
   for (var i = 0; i < 8; i++) {
@@ -90,8 +92,6 @@ function createData() {
   }
   return ads;
 }
-
-var advertisement = (createData());
 
 map.classList.remove('map--faded');
 
@@ -130,20 +130,23 @@ var createCard = function (card) {
   return cardElement;
 };
 
-var createPin = function () {
+var createPin = function (card) {
   var pinElement = pinTemplate.cloneNode(true);
-  pinElement.querySelector('.map__pin').style.left = location.x + 'px;';
-  pinElement.querySelector('.map__pin').style.top = location.y + 'px;';
-  pinElement.querySelector('img').src = author.avatar;
-  pinElement.querySelector('img').alt = offer.title;
+  card = createAdData();
+  var pinWidth = 20;
+  var pinHeight = 40;
+  var left = card.location.x + pinWidth + 'px';
+  var top = card.location.y + pinHeight + 'px';
+  pinElement.style.left = left;
+  pinElement.style.top = top;
+  pinElement.querySelector('img').src = card.author.avatar;
+  pinElement.querySelector('img').alt = card.title;
   return pinElement;
 };
-
-var pins = createPin();
-console.log(pins);
 
 var fragment = document.createDocumentFragment();
 for (var i = 0; i < advertisement.length; i++) {
   fragment.appendChild(createCard(advertisement[i]));
+  fragment.appendChild(createPin());
 }
 mapPinsList.appendChild(fragment);
