@@ -1,31 +1,21 @@
 'use strict';
 
 var TYPES = ['palace', 'flat', 'house', 'bungalo'];
-
 var CHECKIN = ['12:00', '13:00', '14:00'];
-
 var CHECKOUT = ['12:00', '13:00', '14:00'];
-
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+var AVATARNUMBERS = ['01', '02', '03', '04', '05', '06', '07', '08'];
 
 var map = document.querySelector('.map');
-
 var mapPinMain = document.querySelector('.map__pin--main');
-
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
-
 var mapPinsList = document.querySelector('.map__pins');
-
 var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
-
 var mapWidth = mapPinsList.offsetWidth - mapPinMain.offsetWidth / 2;
 
-var avatarNumbers = ['01', '02', '03', '04', '05', '06', '07', '08'];
-
 var createAdData = function () {
-  var avatar = avatarNumbers.slice();
+  var avatar = AVATARNUMBERS.slice();
   shuffleArray(avatar);
 
   var features = FEATURES.slice();
@@ -33,16 +23,13 @@ var createAdData = function () {
   features.length = randomInteger(1, features.length);
 
   var addressX = randomInteger(0, 1000);
-
   var addressY = randomInteger(0, 1000);
-
   var price = randomInteger(0, 10000);
 
   var types = TYPES.slice();
   shuffleArray(types);
 
   var rooms = randomInteger(1, 5);
-
   var guests = randomInteger(1, 10);
 
   var checkin = CHECKIN.slice();
@@ -56,7 +43,6 @@ var createAdData = function () {
   photos.length = randomInteger(1, photos.length);
 
   var coordinateX = randomInteger(0, mapWidth);
-
   var coordinateY = randomInteger(130, 630);
 
   return {
@@ -65,8 +51,8 @@ var createAdData = function () {
     },
     offer: {
       title: 'Заголовок объявления',
-      address: addressX + ',' + addressY,
-      price: price + ' Р/ночь',
+      address: addressX + ', ' + addressY,
+      price: price,
       type: types.pop(),
       rooms: rooms,
       guests: guests,
@@ -82,8 +68,6 @@ var createAdData = function () {
     },
   };
 };
-
-var advertisement = (createData());
 
 function createData() {
   var ads = [];
@@ -120,13 +104,13 @@ var createCard = function (card) {
   var cardElement = cardTemplate.cloneNode(true);
   cardElement.querySelector('.popup__title').textContent = card.offer.title;
   cardElement.querySelector('.popup__text--address').textContent = card.offer.address;
-  cardElement.querySelector('.popup__text--price').textContent = card.offer.price;
+  cardElement.querySelector('.popup__text--price').textContent = card.offer.price + ' Р/ночь';
   cardElement.querySelector('.popup__type').textContent = card.offer.type;
   cardElement.querySelector('.popup__text--capacity').textContent = card.offer.rooms + ' комнат для ' + card.offer.guests + ' гостей';
   cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + card.offer.checkin + ', выезд до ' + card.offer.checkout;
   cardElement.querySelector('.popup__features').textContent = card.offer.features;
   cardElement.querySelector('.popup__description').textContent = card.offer.description;
-  cardElement.querySelector('.popup__photos').src = card.offer.photos;
+  cardElement.querySelector('.popup__photo').src = card.offer.photos[0];
   return cardElement;
 };
 
@@ -145,6 +129,7 @@ var createPin = function (card) {
 };
 
 var fragment = document.createDocumentFragment();
+var advertisement = (createData());
 for (var i = 0; i < advertisement.length; i++) {
   fragment.appendChild(createCard(advertisement[i]));
   fragment.appendChild(createPin());
