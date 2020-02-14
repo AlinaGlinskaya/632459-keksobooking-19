@@ -90,7 +90,6 @@ function randomInteger(min, max) {
 * @param {any[]} arr - массив, который требуется перемешать
 * @return {any[]}
 */
-
 function shuffleArray(arr) {
   for (var j = arr.length - 1; j > 0; j--) {
     var rndm = Math.floor(Math.random() * (j + 1));
@@ -101,6 +100,25 @@ function shuffleArray(arr) {
   return arr;
 }
 
+var createPhoto = function (cardData, photoListElement) {
+  /**  Клонирует массив
+  */
+  var photos = PHOTOS.slice();
+  var photosLength = randomInteger(1, 3);
+  shuffleArray(photos);
+  for (var i = 0; i < photosLength; i++) {
+    var img = new Image(45, 40);
+    img.src = photos.pop();
+    img.classList.add('popup__photo');
+    img.alt = cardData.offer.title;
+    photoListElement.appendChild(img);
+  }
+};
+
+/**
+ * @param {object} card - объект с данными объявления
+ * @return {object} - DOM-элемент карточки объявления
+ */
 var createCard = function (card) {
   var cardElement = cardTemplate.cloneNode(true);
   cardElement.querySelector('.popup__title').textContent = card.offer.title;
@@ -114,16 +132,7 @@ var createCard = function (card) {
   cardElement.querySelector('img').src = card.author.avatar;
   var photoList = cardElement.querySelector('.popup__photos');
   photoList.innerHTML = '';
-  var photos = PHOTOS.slice();
-  var photosLength = randomInteger(1, 3);
-  shuffleArray(photos);
-  for (var i = 0; i < photosLength; i++) {
-    var img = new Image(45, 40);
-    img.src = photos.pop();
-    img.classList.add('popup__photo');
-    img.alt = card.offer.title;
-    photoList.appendChild(img);
-  }
+  createPhoto(card, photoList);
   return cardElement;
 };
 
