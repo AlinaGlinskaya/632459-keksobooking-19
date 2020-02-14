@@ -102,13 +102,15 @@ function shuffleArray(arr) {
 }
 
 var createPhoto = function () {
-  var photoList = cardTemplate.querySelector('.popup__photos');
-  var photoTemplate = cardTemplate.querySelector('.popup__photo').cloneNode(true);
-  var photoElement = photoTemplate;
-  photoElement.src = PHOTOS[randomInteger(0, 2)];
-  for (var i = 0; i < randomInteger(1, 3); i++) {
-    photoList.appendChild(photoElement);
+  var photoList = cardTemplate.querySelector('.popup__photos').cloneNode(true);
+  var photoElement = cardTemplate.querySelector('.popup__photo');
+  photoList.innerHTML = '';
+  var photoLength = randomInteger(1, 3);
+  for (var i = 0; i < photoLength; i++) {
+    photoElement.src = PHOTOS.pop();
+    fragment.appendChild(photoElement);
   }
+  photoList.appendChild(fragment);
   return photoList;
 };
 
