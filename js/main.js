@@ -101,32 +101,29 @@ function shuffleArray(arr) {
   return arr;
 }
 
-var createPhoto = function () {
-  var photoList = cardTemplate.querySelector('.popup__photos').cloneNode(true);
-  var photoElement = cardTemplate.querySelector('.popup__photo');
-  photoList.innerHTML = '';
-  var photoLength = randomInteger(1, 3);
-  for (var i = 0; i < photoLength; i++) {
-    photoElement.src = PHOTOS.pop();
-    fragment.appendChild(photoElement);
-  }
-  photoList.appendChild(fragment);
-  return photoList;
-};
-
 var createCard = function (card) {
   var cardElement = cardTemplate.cloneNode(true);
   cardElement.querySelector('.popup__title').textContent = card.offer.title;
   cardElement.querySelector('.popup__text--address').textContent = card.offer.address;
   cardElement.querySelector('.popup__text--price').textContent = card.offer.price + ' ₽/ночь';
   cardElement.querySelector('.popup__type').textContent = card.offer.type;
-  cardElement.querySelector('.popup__text--capacity').textContent = card.offer.rooms + ' комнат для ' + card.offer.guests + ' гостей';
+  cardElement.querySelector('.popup__text--capacity').textContent = card.offer.rooms + ' комнаты для ' + card.offer.guests + ' гостей';
   cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + card.offer.checkin + ', выезд до ' + card.offer.checkout;
   cardElement.querySelector('.popup__features').textContent = card.offer.features;
   cardElement.querySelector('.popup__description').textContent = card.offer.description;
   cardElement.querySelector('img').src = card.author.avatar;
-  cardElement.querySelector('.popup__photos').innerHTML = '';
-  cardElement.appendChild(createPhoto());
+  var photoList = cardElement.querySelector('.popup__photos');
+  photoList.innerHTML = '';
+  var photos = PHOTOS.slice();
+  var photosLength = randomInteger(1, 3);
+  shuffleArray(photos);
+  for (var i = 0; i < photosLength; i++) {
+    var img = new Image(45, 40);
+    img.src = photos.pop();
+    img.classList.add('popup__photo');
+    img.alt = card.offer.title;
+    photoList.appendChild(img);
+  }
   return cardElement;
 };
 
@@ -150,5 +147,4 @@ for (var i = 0; i < advertisement.length; i++) {
 }
 mapPinsList.appendChild(fragment);
 
-fragment.appendChild(createCard(advertisement[0]));
-map.appendChild(fragment);
+map.appendChild(createCard(advertisement[0]));
