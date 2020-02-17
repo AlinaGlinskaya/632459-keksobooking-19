@@ -12,8 +12,20 @@ var map = document.querySelector('.map');
 var mapPinMain = document.querySelector('.map__pin--main');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 var mapPinsList = document.querySelector('.map__pins');
-var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+// var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 var mapWidth = mapPinsList.offsetWidth - mapPinMain.offsetWidth / 2;
+var fieldsetAdHeader = document.querySelector('.ad-form-header');
+var fieldsetAdText = document.querySelectorAll('.ad-form__element');
+
+function addDisableAttr(field) {
+  field.setAttribute('disabled', '');
+}
+
+addDisableAttr(fieldsetAdHeader);
+
+for (var i = 0; i < fieldsetAdText.length; i++) {
+  addDisableAttr(fieldsetAdText[i]);
+}
 
 var createAdData = function () {
   var avatar = AVATARNUMBERS.slice();
@@ -72,13 +84,11 @@ var createAdData = function () {
 
 function createData() {
   var ads = [];
-  for (var i = 0; i < 8; i++) {
+  for (i = 0; i < 8; i++) {
     ads.push(createAdData());
   }
   return ads;
 }
-
-map.classList.remove('map--faded');
 
 function randomInteger(min, max) {
   var randomNumber = Math.floor(min + Math.random() * (max + 1 - min));
@@ -100,9 +110,8 @@ function shuffleArray(arr) {
   return arr;
 }
 
+/*
 var createPhoto = function (cardData, photoListElement) {
-  /**  Клонирует массив
-  */
   var photos = PHOTOS.slice();
   var photosLength = randomInteger(1, 3);
   shuffleArray(photos);
@@ -119,6 +128,8 @@ var createPhoto = function (cardData, photoListElement) {
  * @param {object} card - объект с данными объявления
  * @return {object} - DOM-элемент карточки объявления
  */
+
+/*
 var createCard = function (card) {
   var cardElement = cardTemplate.cloneNode(true);
   cardElement.querySelector('.popup__title').textContent = card.offer.title;
@@ -135,6 +146,8 @@ var createCard = function (card) {
   createPhoto(card, photoList);
   return cardElement;
 };
+*/
+
 
 var createPin = function (card) {
   var pinElement = pinTemplate.cloneNode(true);
@@ -150,10 +163,12 @@ var createPin = function (card) {
   return pinElement;
 };
 
+/*
 var advertisement = (createData());
 for (var i = 0; i < advertisement.length; i++) {
   fragment.appendChild(createPin());
 }
 mapPinsList.appendChild(fragment);
+*/
 
-map.appendChild(createCard(advertisement[0]));
+// map.appendChild(createCard(advertisement[0]));
