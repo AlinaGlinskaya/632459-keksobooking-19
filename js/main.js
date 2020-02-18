@@ -7,6 +7,8 @@ var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditio
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var ENTER_KEY = 'Enter';
 var AVATARNUMBERS = ['01', '02', '03', '04', '05', '06', '07', '08'];
+var PIN_MAIN_WIDTH = 40;
+var PIN_MAIN_HEIGHT = 44;
 
 var fragment = document.createDocumentFragment();
 var map = document.querySelector('.map');
@@ -50,6 +52,28 @@ function switchOnActiveState() {
   removeDisableAttr(fieldsetAdText);
 }
 
+function getAddress(x, y) {
+  var addressInput = adForm.querySelector('#address');
+  if (adForm.classList.contains('ad-form--disabled')) {
+    addressInput.value = x + ', ' + y;
+  } else {
+    addressInput.value = x + ', ' + (y + PIN_MAIN_HEIGHT / 2);
+  }
+}
+function getStartCoordinateX() {
+  var x = mapPinMain.style.left.slice(0, 3);
+  var pinMainX = parseInt(x, 10) + PIN_MAIN_WIDTH / 2;
+  return pinMainX;
+}
+
+function getStartCoordinateY() {
+  var y = mapPinMain.style.top.slice(0, 3);
+  var pinMainY = parseInt(y, 10) + PIN_MAIN_HEIGHT / 2;
+  return pinMainY;
+}
+
+getAddress(getStartCoordinateX(), getStartCoordinateY());
+
 addDisableAttr(mapFilterInputs);
 addDisableAttr(fieldsetAdText);
 addOneDisableAttr(mapFilterFeatures);
@@ -58,6 +82,7 @@ addOneDisableAttr(fieldsetAdHeader);
 mapPinMain.addEventListener('mousedown', function (evt) {
   if (evt.button === 0) {
     switchOnActiveState();
+    getAddress(getStartCoordinateX(), getStartCoordinateY());
   }
 });
 
