@@ -5,6 +5,7 @@ var CHECKIN = ['12:00', '13:00', '14:00'];
 var CHECKOUT = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+var ENTER_KEY = 'Enter';
 var AVATARNUMBERS = ['01', '02', '03', '04', '05', '06', '07', '08'];
 
 var fragment = document.createDocumentFragment();
@@ -16,16 +17,56 @@ var mapPinsList = document.querySelector('.map__pins');
 var mapWidth = mapPinsList.offsetWidth - mapPinMain.offsetWidth / 2;
 var fieldsetAdHeader = document.querySelector('.ad-form-header');
 var fieldsetAdText = document.querySelectorAll('.ad-form__element');
+var mapFilterInputs = document.querySelectorAll('.map__filter');
+var mapFilterFeatures = document.querySelector('.map__features');
+var adForm = document.querySelector('.ad-form');
 
 function addDisableAttr(field) {
+  for (var i = 0; i < field.length; i++) {
+    field[i].setAttribute('disabled', '');
+  }
+}
+
+function addOneDisableAttr(field) {
   field.setAttribute('disabled', '');
 }
 
-addDisableAttr(fieldsetAdHeader);
-
-for (var i = 0; i < fieldsetAdText.length; i++) {
-  addDisableAttr(fieldsetAdText[i]);
+function removeOneDisableAttr(field) {
+  field.removeAttribute('disabled');
 }
+
+function removeDisableAttr(field) {
+  for (var i = 0; i < field.length; i++) {
+    field[i].removeAttribute('disabled');
+  }
+}
+
+function switchOnActiveState() {
+  map.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+  removeOneDisableAttr(mapFilterFeatures);
+  removeOneDisableAttr(fieldsetAdHeader);
+  removeDisableAttr(mapFilterInputs);
+  removeDisableAttr(fieldsetAdText);
+}
+
+addDisableAttr(mapFilterInputs);
+addDisableAttr(fieldsetAdText);
+addOneDisableAttr(mapFilterFeatures);
+addOneDisableAttr(fieldsetAdHeader);
+
+mapPinMain.addEventListener('mousedown', function (evt) {
+  if (evt.button === 0) {
+    switchOnActiveState();
+  }
+});
+
+mapPinMain.addEventListener('keydown', function (evt) {
+  if (evt.key === ENTER_KEY) {
+    switchOnActiveState();
+  }
+});
+
 
 var createAdData = function () {
   var avatar = AVATARNUMBERS.slice();
@@ -84,7 +125,7 @@ var createAdData = function () {
 
 function createData() {
   var ads = [];
-  for (i = 0; i < 8; i++) {
+  for (var i = 0; i < 8; i++) {
     ads.push(createAdData());
   }
   return ads;
