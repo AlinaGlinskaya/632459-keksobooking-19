@@ -22,6 +22,7 @@ var mapFilterInputs = document.querySelectorAll('.map__filter');
 var mapFilterFeatures = document.querySelector('.map__features');
 var adForm = document.querySelector('.ad-form');
 
+
 var addDisableAttr = function (fields) {
   for (var i = 0; i < fields.length; i++) {
     fields[i].setAttribute('disabled', '');
@@ -65,29 +66,66 @@ var getStartCoordinateY = function () {
 };
 
 var checkCapacity = function () {
-  var room = adForm.querySelector('#room_number');
-  var roomInputs = room.children;
-  var guest = adForm.querySelector('#capacity');
-  var guestInputs = guest.children;
-  for (var i = 0; i < roomInputs.length; i++) {
-    var itemRoom = roomInputs[i].value;
-    var itemGuest = guestInputs[i].value;
-  }
-  if (itemRoom === '1' && (itemGuest === '3' || itemGuest === '2' || itemGuest === '0')) {
-    room.setCustomValidity('Только для 1 гостя');
-  }
-  if (itemRoom === '2' && (itemGuest === '3' || itemGuest === '0')) {
-    room.setCustomValidity('Только для 1 или 2-х гостей');
-  }
-  if (itemRoom === '3' && itemGuest === '0') {
-    room.setCustomValidity('Для 1, 2 или 3-х гостей');
-  }
-  if (itemRoom === '4' && itemGuest !== '0') {
-    room.setCustomValidity('Не для гостей');
+  var roomSelectElement = adForm.querySelector('#room_number');
+  var guestSelectElement = adForm.querySelector('#capacity');
+  /* roomSelectElement.addEventListener('change', function (evt) {
+    roomSelectElement = evt.currentTarget;
+  });
+  guestSelectElement.addEventListener('change', function (evt) {
+    guestSelectElement = evt.currentTarget;
+  });*/
+
+  console.log(roomSelectElement.value);
+  console.log(guestSelectElement.value);
+
+  switch (roomSelectElement.value) {
+    case '1':
+      if (guestSelectElement.value === '3' || guestSelectElement.value === '2' || guestSelectElement.value === '0') {
+        roomSelectElement.setCustomValidity('Только для 1 гостя');
+      } else {
+        roomSelectElement.setCustomValidity('');
+      }
+      break;
+
+    case '2':
+      if (guestSelectElement.value === '3' || guestSelectElement.value === '0') {
+        roomSelectElement.setCustomValidity('Только для 1-го или 2-х гостей');
+      } else {
+        roomSelectElement.setCustomValidity('');
+      }
+      break;
+
+    case '3':
+      if (guestSelectElement.value === '0') {
+        roomSelectElement.setCustomValidity('Только для 1-го, 2-х или 3-х гостей');
+      } else {
+        roomSelectElement.setCustomValidity('');
+      }
+      break;
+
+    case '100':
+      if (guestSelectElement.value !== '0') {
+        roomSelectElement.setCustomValidity('Не для гостей');
+      } else {
+        roomSelectElement.setCustomValidity('');
+      }
+      break;
   }
 };
 
-checkCapacity();
+/* if (roomSelectElement.value === '1' && (guestSelectElement.value === '3' || guestSelectElement.value === '2' || guestSelectElement.value === '0')) {
+    roomSelectElement.setCustomValidity('Только для 1 гостя');
+  }
+  if (roomSelectElement.value === '2' && (guestSelectElement.value === '3' || guestSelectElement.value === '0')) {
+    roomSelectElement.setCustomValidity('Только для 1-го или 2-х гостей');
+  }
+  if (roomSelectElement.value === '3' && guestSelectElement.value === '0') {
+    roomSelectElement.setCustomValidity('Только для 1-го, 2-х или 3-х гостей');
+  }
+  if (roomSelectElement.value === '100' && guestSelectElement.value !== '0') {
+    roomSelectElement.setCustomValidity('Не для гостей');
+  }*/
+
 
 var createAdData = function () {
   var avatar = AVATARNUMBERS.slice();
@@ -247,6 +285,7 @@ fieldsetAdHeader.setAttribute('disabled', '');
 
 adForm.addEventListener('submit', function (evt) {
   evt.preventDefault();
+  checkCapacity();
 });
 
 /*
