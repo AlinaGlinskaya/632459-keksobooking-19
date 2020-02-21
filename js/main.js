@@ -66,19 +66,23 @@ var getStartCoordinateY = function () {
 
 var checkCapacity = function () {
   var room = adForm.querySelector('#room_number');
-  var roomInputs = room.querySelectorAll('option');
+  var roomInputs = room.children;
   var guest = adForm.querySelector('#capacity');
-  var guestInputs = guest.querySelectorAll('option');
-  if (roomInputs && (guestInputs || guestInputs || guestInputs)) {
+  var guestInputs = guest.children;
+  for (var i = 0; i < roomInputs.length; i++) {
+    var itemRoom = roomInputs[i].value;
+    var itemGuest = guestInputs[i].value;
+  }
+  if (itemRoom === '1' && (itemGuest === '3' || itemGuest === '2' || itemGuest === '0')) {
     room.setCustomValidity('Только для 1 гостя');
   }
-  if (roomInputs && (guestInputs || guestInputs)) {
+  if (itemRoom === '2' && (itemGuest === '3' || itemGuest === '0')) {
     room.setCustomValidity('Только для 1 или 2-х гостей');
   }
-  if (roomInputs[2] && guestInputs[4]) {
+  if (itemRoom === '3' && itemGuest === '0') {
     room.setCustomValidity('Для 1, 2 или 3-х гостей');
   }
-  if (roomInputs[3] && !guestInputs[4]) {
+  if (itemRoom === '4' && itemGuest !== '0') {
     room.setCustomValidity('Не для гостей');
   }
 };
