@@ -21,6 +21,8 @@ var fieldsetAdText = document.querySelectorAll('.ad-form__element');
 var mapFilterInputs = document.querySelectorAll('.map__filter');
 var mapFilterFeatures = document.querySelector('.map__features');
 var adForm = document.querySelector('.ad-form');
+var roomSelectElement = adForm.querySelector('#room_number');
+var guestSelectElement = adForm.querySelector('#capacity');
 
 
 var addDisableAttr = function (fields) {
@@ -66,18 +68,6 @@ var getStartCoordinateY = function () {
 };
 
 var checkCapacity = function () {
-  var roomSelectElement = adForm.querySelector('#room_number');
-  var guestSelectElement = adForm.querySelector('#capacity');
-  /* roomSelectElement.addEventListener('change', function (evt) {
-    roomSelectElement = evt.currentTarget;
-  });
-  guestSelectElement.addEventListener('change', function (evt) {
-    guestSelectElement = evt.currentTarget;
-  });*/
-
-  console.log(roomSelectElement.value);
-  console.log(guestSelectElement.value);
-
   switch (roomSelectElement.value) {
     case '1':
       if (guestSelectElement.value === '3' || guestSelectElement.value === '2' || guestSelectElement.value === '0') {
@@ -112,20 +102,6 @@ var checkCapacity = function () {
       break;
   }
 };
-
-/* if (roomSelectElement.value === '1' && (guestSelectElement.value === '3' || guestSelectElement.value === '2' || guestSelectElement.value === '0')) {
-    roomSelectElement.setCustomValidity('Только для 1 гостя');
-  }
-  if (roomSelectElement.value === '2' && (guestSelectElement.value === '3' || guestSelectElement.value === '0')) {
-    roomSelectElement.setCustomValidity('Только для 1-го или 2-х гостей');
-  }
-  if (roomSelectElement.value === '3' && guestSelectElement.value === '0') {
-    roomSelectElement.setCustomValidity('Только для 1-го, 2-х или 3-х гостей');
-  }
-  if (roomSelectElement.value === '100' && guestSelectElement.value !== '0') {
-    roomSelectElement.setCustomValidity('Не для гостей');
-  }*/
-
 
 var createAdData = function () {
   var avatar = AVATARNUMBERS.slice();
@@ -283,9 +259,16 @@ addDisableAttr(fieldsetAdText);
 mapFilterFeatures.setAttribute('disabled', '');
 fieldsetAdHeader.setAttribute('disabled', '');
 
+roomSelectElement.addEventListener('change', function () {
+  checkCapacity();
+});
+
+guestSelectElement.addEventListener('change', function () {
+  checkCapacity();
+});
+
 adForm.addEventListener('submit', function (evt) {
   evt.preventDefault();
-  checkCapacity();
 });
 
 /*
