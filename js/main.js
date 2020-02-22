@@ -14,7 +14,7 @@ var map = document.querySelector('.map');
 var mapPinMain = document.querySelector('.map__pin--main');
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 var mapPinsList = document.querySelector('.map__pins');
-// var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 var mapWidth = mapPinsList.offsetWidth - mapPinMain.offsetWidth / 2;
 var fieldsetAdHeader = document.querySelector('.ad-form-header');
 var fieldsetAdText = document.querySelectorAll('.ad-form__element');
@@ -23,6 +23,10 @@ var mapFilterFeatures = document.querySelector('.map__features');
 var adForm = document.querySelector('.ad-form');
 var roomSelectElement = adForm.querySelector('#room_number');
 var guestSelectElement = adForm.querySelector('#capacity');
+var timeInSelectElement = adForm.querySelector('#timein');
+var timeOutSelectElement = adForm.querySelector('#timeout');
+var houseTypeSelectElement = adForm.querySelector('#type');
+var priceInput = adForm.querySelector('#price');
 
 
 var addDisableAttr = function (fields) {
@@ -186,7 +190,6 @@ var shuffleArray = function (arr) {
   return arr;
 };
 
-/*
 var createPhoto = function (cardData, photoListElement) {
   var photos = PHOTOS.slice();
   var photosLength = randomInteger(1, 3);
@@ -204,8 +207,6 @@ var createPhoto = function (cardData, photoListElement) {
  * @param {object} card - объект с данными объявления
  * @return {object} - DOM-элемент карточки объявления
  */
-
-/*
 var createCard = function (card) {
   var cardElement = cardTemplate.cloneNode(true);
   cardElement.querySelector('.popup__title').textContent = card.offer.title;
@@ -222,8 +223,6 @@ var createCard = function (card) {
   createPhoto(card, photoList);
   return cardElement;
 };
-*/
-
 
 var createPin = function (card) {
   var pinElement = pinTemplate.cloneNode(true);
@@ -237,6 +236,41 @@ var createPin = function (card) {
   pinElement.querySelector('img').src = card.author.avatar;
   pinElement.querySelector('img').alt = card.title;
   return pinElement;
+};
+
+var changeTimeOption = function (select, option) {
+  switch (select.value) {
+    case '12:00':
+      option.value = '12:00';
+      break;
+    case '13:00':
+      option.value = '13:00';
+      break;
+    case '14:00':
+      option.value = '14:00';
+      break;
+  }
+};
+
+var setMinPrice = function () {
+  switch (houseTypeSelectElement.value) {
+    case 'bungalo':
+      priceInput.setAttribute('min', '0');
+      priceInput.placeholder = '0';
+      break;
+    case 'flat':
+      priceInput.setAttribute('min', '1000');
+      priceInput.placeholder = '1000';
+      break;
+    case 'house':
+      priceInput.setAttribute('min', '5000');
+      priceInput.placeholder = '5000';
+      break;
+    case 'palace':
+      priceInput.setAttribute('min', '10000');
+      priceInput.placeholder = '10000';
+      break;
+  }
 };
 
 mapPinMain.addEventListener('mousedown', function (evt) {
@@ -267,17 +301,28 @@ guestSelectElement.addEventListener('change', function () {
   checkCapacity();
 });
 
+timeInSelectElement.addEventListener('change', function () {
+  changeTimeOption(timeInSelectElement, timeOutSelectElement);
+});
+
+timeOutSelectElement.addEventListener('change', function () {
+  changeTimeOption(timeOutSelectElement, timeInSelectElement);
+});
+
+houseTypeSelectElement.addEventListener('change', function () {
+  setMinPrice();
+});
+
 adForm.addEventListener('submit', function (evt) {
   evt.preventDefault();
 });
 
-/*
 var advertisement = (createData());
 var fragment = document.createDocumentFragment();
 for (var i = 0; i < advertisement.length; i++) {
   fragment.appendChild(createPin());
 }
 mapPinsList.appendChild(fragment);
-*/
 
-// map.appendChild(createCard(advertisement[0]));
+
+map.appendChild(createCard(advertisement[0]));
