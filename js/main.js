@@ -6,6 +6,7 @@ var CHECKOUT = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var ENTER_KEY = 'Enter';
+var ESC_KEY = 'Escape';
 var AVATARNUMBERS = ['01', '02', '03', '04', '05', '06', '07', '08'];
 var PIN_MAIN_WIDTH = 40;
 var PIN_MAIN_HEIGHT = 44;
@@ -28,7 +29,6 @@ var timeOutSelectElement = adForm.querySelector('#timeout');
 var houseTypeSelectElement = adForm.querySelector('#type');
 var priceInput = adForm.querySelector('#price');
 
-
 var addDisableAttr = function (fields) {
   for (var i = 0; i < fields.length; i++) {
     fields[i].setAttribute('disabled', '');
@@ -48,6 +48,12 @@ var switchToActiveState = function () {
   fieldsetAdHeader.removeAttribute('disabled');
   removeDisableAttr(mapFilterInputs);
   removeDisableAttr(fieldsetAdText);
+  var advertisement = (createData());
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < advertisement.length; i++) {
+    fragment.appendChild(createPin());
+  }
+  mapPinsList.appendChild(fragment);
 };
 
 var getAddress = function (x, y) {
@@ -218,6 +224,15 @@ var createCard = function (card) {
   cardElement.querySelector('.popup__features').textContent = card.offer.features;
   cardElement.querySelector('.popup__description').textContent = card.offer.description;
   cardElement.querySelector('img').src = card.author.avatar;
+  var adCloseButton = cardElement.querySelector('.popup__close');
+  adCloseButton.addEventListener('click', function () {
+    cardElement.classList.add('hidden');
+  });
+  document.addEventListener('keydown', function (evt) {
+    if (evt.key === ESC_KEY) {
+      cardElement.classList.add('hidden');
+    }
+  });
   var photoList = cardElement.querySelector('.popup__photos');
   photoList.innerHTML = '';
   createPhoto(card, photoList);
@@ -235,6 +250,14 @@ var createPin = function (card) {
   pinElement.style.top = top;
   pinElement.querySelector('img').src = card.author.avatar;
   pinElement.querySelector('img').alt = card.title;
+  pinElement.addEventListener('click', function () {
+    map.appendChild(createCard(createAdData()));
+  });
+  pinElement.addEventListener('keydown', function (evt) {
+    if (evt.key === ENTER_KEY) {
+      map.appendChild(createCard(createAdData()));
+    }
+  });
   return pinElement;
 };
 
@@ -316,13 +339,3 @@ houseTypeSelectElement.addEventListener('change', function () {
 adForm.addEventListener('submit', function (evt) {
   evt.preventDefault();
 });
-
-var advertisement = (createData());
-var fragment = document.createDocumentFragment();
-for (var i = 0; i < advertisement.length; i++) {
-  fragment.appendChild(createPin());
-}
-mapPinsList.appendChild(fragment);
-
-
-map.appendChild(createCard(advertisement[0]));
