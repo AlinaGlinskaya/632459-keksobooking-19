@@ -245,7 +245,7 @@ var createCard = function (card) {
   var adCloseButtonHandler = function (evt) {
     if (evt.key === ESC_KEY) {
       cardElement.remove();
-      adCloseButton.removeEventListener('keydown', adCloseButtonHandler);
+      document.removeEventListener('keydown', adCloseButtonHandler);
     }
   };
   document.addEventListener('keydown', adCloseButtonHandler);
@@ -273,6 +273,7 @@ var createPin = function (card) {
     } else {
       var ad = document.querySelector('.popup');
       ad.remove();
+      document.removeEventListener('keydown', adCloseButtonHandler);
     }
   });
   return pinElement;
