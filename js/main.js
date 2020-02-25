@@ -1,6 +1,6 @@
 'use strict';
 
-var TYPES = {'Дворец': 'palace', 'Квартира': 'flat', 'Дом': 'house', 'Бунгало': 'bungalo'};
+var TYPES = {'palace': 'Дворец', 'flat': 'Квартира', 'house': 'Дом', 'bungalo': 'Бунгало'};
 var CHECKIN = ['12:00', '13:00', '14:00'];
 var CHECKOUT = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
@@ -28,6 +28,7 @@ var timeInSelectElement = adForm.querySelector('#timein');
 var timeOutSelectElement = adForm.querySelector('#timeout');
 var houseTypeSelectElement = adForm.querySelector('#type');
 var priceInput = adForm.querySelector('#price');
+var addressInput = adForm.querySelector('#address');
 
 var addDisableAttr = function (fields) {
   for (var i = 0; i < fields.length; i++) {
@@ -56,8 +57,12 @@ var switchToActiveState = function () {
   mapPinsList.appendChild(fragment);
 };
 
+
+/**
+ * @param {number} x - координата главной метки по оси X
+ * @param {number} y - координата главной метки по оси Y
+ */
 var getAddress = function (x, y) {
-  var addressInput = adForm.querySelector('#address');
   if (adForm.classList.contains('ad-form--disabled')) {
     addressInput.value = x + ', ' + y;
   } else {
@@ -125,7 +130,7 @@ var createAdData = function () {
   var addressY = randomInteger(0, 1000);
   var price = randomInteger(0, 10000);
 
-  var types = Object.keys(TYPES);
+  var types = Object.values(TYPES);
   shuffleArray(types);
 
   var rooms = randomInteger(1, 5);
@@ -196,6 +201,10 @@ var shuffleArray = function (arr) {
   return arr;
 };
 
+/**
+ * @param {object} cardData - объект с данными объявления
+ * @param {object} photoListElement - элемент, в который добавляются изображения
+ */
 var createPhoto = function (cardData, photoListElement) {
   var photos = PHOTOS.slice();
   var photosLength = randomInteger(1, 3);
@@ -221,18 +230,25 @@ var createCard = function (card) {
   cardElement.querySelector('.popup__type').textContent = card.offer.type;
   cardElement.querySelector('.popup__text--capacity').textContent = card.offer.rooms + ' комнаты для ' + card.offer.guests + ' гостей';
   cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + card.offer.checkin + ', выезд до ' + card.offer.checkout;
-  cardElement.querySelector('.popup__features').textContent = card.offer.features;
+  cardElement.querySelector('.popup__features').innerHTML = '';
+  for (var i = 0; i < (card.offer.features).length; i++) {
+    var featureItem = document.createElement('li');
+    featureItem.textContent = card.offer.features.pop();
+    cardElement.querySelector('.popup__features').appendChild(featureItem);
+  }
   cardElement.querySelector('.popup__description').textContent = card.offer.description;
   cardElement.querySelector('img').src = card.author.avatar;
   var adCloseButton = cardElement.querySelector('.popup__close');
   adCloseButton.addEventListener('click', function () {
-    cardElement.classList.add('hidden');
+    cardElement.remove();
   });
-  document.addEventListener('keydown', function (evt) {
+  var adCloseButtonHandler = function (evt) {
     if (evt.key === ESC_KEY) {
-      cardElement.classList.add('hidden');
+      cardElement.remove();
+      adCloseButton.removeEventListener('keydown', adCloseButtonHandler);
     }
-  });
+  };
+  document.addEventListener('keydown', adCloseButtonHandler);
   var photoList = cardElement.querySelector('.popup__photos');
   photoList.innerHTML = '';
   createPhoto(card, photoList);
@@ -251,11 +267,12 @@ var createPin = function (card) {
   pinElement.querySelector('img').src = card.author.avatar;
   pinElement.querySelector('img').alt = card.title;
   pinElement.addEventListener('click', function () {
-    map.appendChild(createCard(createAdData()));
-  });
-  pinElement.addEventListener('keydown', function (evt) {
-    if (evt.key === ENTER_KEY) {
+    pinElement.classList.add('checked');
+    if (pinElement.classList.contains('checked')) {
       map.appendChild(createCard(createAdData()));
+    } else {
+      var ad = document.querySelector('.popup');
+      ad.remove();
     }
   });
   return pinElement;
