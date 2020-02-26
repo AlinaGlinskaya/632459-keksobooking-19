@@ -10,6 +10,8 @@ var ESC_KEY = 'Escape';
 var AVATARNUMBERS = ['01', '02', '03', '04', '05', '06', '07', '08'];
 var PIN_MAIN_WIDTH = 40;
 var PIN_MAIN_HEIGHT = 44;
+var PIN_WIDTH = 20;
+var PIN_HEIGHT = 40;
 
 var map = document.querySelector('.map');
 var mapPinMain = document.querySelector('.map__pin--main');
@@ -52,7 +54,7 @@ var switchToActiveState = function () {
   var advertisement = (createData());
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < advertisement.length; i++) {
-    fragment.appendChild(createPin());
+    fragment.appendChild(createPin(advertisement[i]));
   }
   mapPinsList.appendChild(fragment);
 };
@@ -206,15 +208,21 @@ var shuffleArray = function (arr) {
  * @param {object} photoListElement - элемент, в который добавляются изображения
  */
 var createPhoto = function (cardData, photoListElement) {
-  var photos = PHOTOS.slice();
-  var photosLength = randomInteger(1, 3);
-  shuffleArray(photos);
-  for (var i = 0; i < photosLength; i++) {
+  var photos = cardData.offer.photos;
+  for (var i = 0; i < photos.length; i++) {
     var img = new Image(45, 40);
     img.src = photos.pop();
     img.classList.add('popup__photo');
     img.alt = cardData.offer.title;
     photoListElement.appendChild(img);
+  }
+};
+
+var adCardCloseKeydownHandler = function (evt) {
+  if (evt.key === ESC_KEY) {
+    var adCard = document.querySelector('.map__card');
+    adCard.remove();
+    document.removeEventListener('keydown', adCardCloseKeydownHandler);
   }
 };
 
@@ -238,17 +246,13 @@ var createCard = function (card) {
   }
   cardElement.querySelector('.popup__description').textContent = card.offer.description;
   cardElement.querySelector('img').src = card.author.avatar;
+
   var adCloseButton = cardElement.querySelector('.popup__close');
   adCloseButton.addEventListener('click', function () {
     cardElement.remove();
   });
-  var adCloseButtonHandler = function (evt) {
-    if (evt.key === ESC_KEY) {
-      cardElement.remove();
-      document.removeEventListener('keydown', adCloseButtonHandler);
-    }
-  };
-  document.addEventListener('keydown', adCloseButtonHandler);
+  document.addEventListener('keydown', adCardCloseKeydownHandler);
+
   var photoList = cardElement.querySelector('.popup__photos');
   photoList.innerHTML = '';
   createPhoto(card, photoList);
@@ -257,24 +261,19 @@ var createCard = function (card) {
 
 var createPin = function (card) {
   var pinElement = pinTemplate.cloneNode(true);
-  card = createAdData();
-  var pinWidth = 20;
-  var pinHeight = 40;
-  var left = card.location.x + pinWidth + 'px';
-  var top = card.location.y + pinHeight + 'px';
+  var left = card.location.x + PIN_WIDTH + 'px';
+  var top = card.location.y + PIN_HEIGHT + 'px';
   pinElement.style.left = left;
   pinElement.style.top = top;
   pinElement.querySelector('img').src = card.author.avatar;
   pinElement.querySelector('img').alt = card.title;
   pinElement.addEventListener('click', function () {
-    pinElement.classList.add('checked');
-    if (pinElement.classList.contains('checked')) {
-      map.appendChild(createCard(createAdData()));
-    } else {
-      var ad = document.querySelector('.popup');
-      ad.remove();
-      document.removeEventListener('keydown', adCloseButtonHandler);
+    var adCard = document.querySelector('.map__card');
+    if (adCard) {
+      document.removeEventListener('keydown', adCardCloseKeydownHandler);
+      adCard.remove();
     }
+    map.appendChild(createCard(card));
   });
   return pinElement;
 };
