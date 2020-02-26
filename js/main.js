@@ -211,7 +211,7 @@ var createPhoto = function (cardData, photoListElement) {
   var photos = cardData.offer.photos;
   for (var i = 0; i < photos.length; i++) {
     var img = new Image(45, 40);
-    img.src = photos.pop();
+    img.src = photos[i];
     img.classList.add('popup__photo');
     img.alt = cardData.offer.title;
     photoListElement.appendChild(img);
@@ -241,7 +241,7 @@ var createCard = function (card) {
   cardElement.querySelector('.popup__features').innerHTML = '';
   for (var i = 0; i < (card.offer.features).length; i++) {
     var featureItem = document.createElement('li');
-    featureItem.textContent = card.offer.features.pop();
+    featureItem.textContent = card.offer.features[i];
     cardElement.querySelector('.popup__features').appendChild(featureItem);
   }
   cardElement.querySelector('.popup__description').textContent = card.offer.description;
