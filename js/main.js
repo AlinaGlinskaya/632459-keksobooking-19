@@ -226,6 +226,24 @@ var adCardCloseKeydownHandler = function (evt) {
   }
 };
 
+var pinClickActivateMapHandler = function (evt) {
+  if (evt.button === 0) {
+    switchToActiveState();
+    getAddress(getStartCoordinateX(), getStartCoordinateY());
+    var mainPin = document.querySelector('.map__pin--main');
+    mainPin.removeEventListener('mousedown', pinClickActivateMapHandler);
+  }
+};
+
+var pinKeydownActivateMapHandler = function (evt) {
+  if (evt.key === ENTER_KEY) {
+    switchToActiveState();
+    getAddress(getStartCoordinateX(), getStartCoordinateY());
+    var mainPin = document.querySelector('.map__pin--main');
+    mainPin.removeEventListener('keydown', pinKeydownActivateMapHandler);
+  }
+};
+
 /**
  * @param {object} card - объект с данными объявления
  * @return {object} - DOM-элемент карточки объявления
@@ -250,7 +268,9 @@ var createCard = function (card) {
   var adCloseButton = cardElement.querySelector('.popup__close');
   adCloseButton.addEventListener('click', function () {
     cardElement.remove();
+    document.removeEventListener('keydown', adCardCloseKeydownHandler);
   });
+
   document.addEventListener('keydown', adCardCloseKeydownHandler);
 
   var photoList = cardElement.querySelector('.popup__photos');
@@ -261,7 +281,7 @@ var createCard = function (card) {
 
 var createPin = function (card) {
   var pinElement = pinTemplate.cloneNode(true);
-  var left = card.location.x + PIN_WIDTH + 'px';
+  var left = card.location.x + PIN_WIDTH / 2 + 'px';
   var top = card.location.y + PIN_HEIGHT + 'px';
   pinElement.style.left = left;
   pinElement.style.top = top;
@@ -313,18 +333,9 @@ var setMinPrice = function () {
   }
 };
 
-mapPinMain.addEventListener('mousedown', function (evt) {
-  if (evt.button === 0) {
-    switchToActiveState();
-    getAddress(getStartCoordinateX(), getStartCoordinateY());
-  }
-});
+mapPinMain.addEventListener('mousedown', pinClickActivateMapHandler);
 
-mapPinMain.addEventListener('keydown', function (evt) {
-  if (evt.key === ENTER_KEY) {
-    switchToActiveState();
-  }
-});
+mapPinMain.addEventListener('keydown', pinKeydownActivateMapHandler);
 
 getAddress(getStartCoordinateX(), getStartCoordinateY());
 
