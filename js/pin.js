@@ -8,6 +8,10 @@
 
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var map = document.querySelector('.map');
+  var mapPinMain = document.querySelector('.map__pin--main');
+  var pinMainWidth = mapPinMain.offsetWidth;
+  var pinMainHeight = mapPinMain.offsetHeight;
+
 
   var adCardCloseKeydownHandler = function (evt) {
     if (evt.key === ESC_KEY) {
@@ -17,7 +21,7 @@
     }
   };
 
-  window.createPin = function (card) {
+  var createPin = function (card) {
     var pinElement = pinTemplate.cloneNode(true);
     var left = card.location.x + PIN_WIDTH / 2 + 'px';
     var top = card.location.y + PIN_HEIGHT + 'px';
@@ -34,5 +38,11 @@
       map.appendChild(window.createCard(card));
     });
     return pinElement;
+  };
+
+  window.pin = {
+    createPin: createPin,
+    pinMainWidth: pinMainWidth,
+    pinMainHeight: pinMainHeight,
   };
 })();

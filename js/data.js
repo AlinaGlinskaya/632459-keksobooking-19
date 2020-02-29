@@ -34,7 +34,6 @@
     return arr;
   };
 
-
   // Функция создания объекта со случайными данными
 
   var createAdData = function () {

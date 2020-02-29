@@ -37,7 +37,7 @@
     var advertisement = window.createData();
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < advertisement.length; i++) {
-      fragment.appendChild(window.createPin(advertisement[i]));
+      fragment.appendChild(window.pin.createPin(advertisement[i]));
     }
     mapPinsList.appendChild(fragment);
   };
@@ -45,7 +45,7 @@
   var pinClickActivateMapHandler = function (evt) {
     if (evt.button === 0) {
       switchToActiveState();
-      window.util.getAddress(window.util.getStartCoordinateX(), window.util.getStartCoordinateY());
+      window.form.getAddress();
       var mainPin = document.querySelector('.map__pin--main');
       mainPin.removeEventListener('mousedown', pinClickActivateMapHandler);
     }
@@ -54,7 +54,7 @@
   var pinKeydownActivateMapHandler = function (evt) {
     if (evt.key === ENTER_KEY) {
       switchToActiveState();
-      window.util.getAddress(window.util.getStartCoordinateX(), window.util.getStartCoordinateY());
+      window.form.getAddress();
       var mainPin = document.querySelector('.map__pin--main');
       mainPin.removeEventListener('keydown', pinKeydownActivateMapHandler);
     }
@@ -63,8 +63,6 @@
   mapPinMain.addEventListener('mousedown', pinClickActivateMapHandler);
 
   mapPinMain.addEventListener('keydown', pinKeydownActivateMapHandler);
-
-  window.util.getAddress(window.util.getStartCoordinateX(), window.util.getStartCoordinateY());
 
   addDisableAttr(mapFilterInputs);
   addDisableAttr(fieldsetAdText);

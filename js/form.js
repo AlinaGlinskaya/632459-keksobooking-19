@@ -8,6 +8,8 @@
   var timeOutSelectElement = adForm.querySelector('#timeout');
   var houseTypeSelectElement = adForm.querySelector('#type');
   var priceInput = adForm.querySelector('#price');
+  var addressInput = adForm.querySelector('#address');
+  var mapPinMain = document.querySelector('.map__pin--main');
 
   var checkCapacity = function () {
     switch (roomSelectElement.value) {
@@ -104,5 +106,24 @@
     evt.preventDefault();
   });
 
-  window.util.getAddress(window.util.getStartCoordinateX(), window.util.getStartCoordinateY());
+  /**
+    Заполняет поле «адрес» в формате: «координата по оси X, координата по оси Y»
+    */
+  var getAddress = function () {
+    var x = mapPinMain.style.left.slice(0, 3);
+    var pinMainX = parseInt(x, 10) + window.pin.pinMainWidth / 2;
+    var y = mapPinMain.style.top.slice(0, 3);
+    var pinMainY = parseInt(y, 10) + window.pin.pinMainHeight;
+    if (adForm.classList.contains('ad-form--disabled')) {
+      addressInput.value = Math.round(pinMainX) + ', ' + Math.round(pinMainY - window.pin.pinMainHeight / 2);
+    } else {
+      addressInput.value = Math.round(pinMainX) + ', ' + Math.round(pinMainY);
+    }
+  };
+
+  getAddress();
+
+  window.form = {
+    getAddress: getAddress,
+  };
 })();
