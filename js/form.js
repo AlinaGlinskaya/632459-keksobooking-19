@@ -86,10 +86,10 @@
     Заполняет поле «адрес» в формате: «координата по оси X, координата по оси Y»
     */
   var getAddress = function () {
-    var x = mapPinMain.style.left.slice(0, 3);
-    var pinMainX = parseInt(x, 10) + window.pin.pinMainWidth / 2;
-    var y = mapPinMain.style.top.slice(0, 3);
-    var pinMainY = parseInt(y, 10) + window.pin.pinMainHeight;
+    var x = mapPinMain.offsetLeft;
+    var pinMainX = x + window.pin.pinMainWidth / 2;
+    var y = mapPinMain.offsetTop;
+    var pinMainY = y + window.pin.pinMainHeight;
     if (adForm.classList.contains('ad-form--disabled')) {
       addressInput.value = Math.round(pinMainX) + ', ' + Math.round(pinMainY - window.pin.pinMainHeight / 2);
     } else {
