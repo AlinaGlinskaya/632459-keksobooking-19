@@ -31,9 +31,14 @@
     pinElement.querySelector('img').alt = card.title;
     pinElement.addEventListener('click', function () {
       var adCard = document.querySelector('.map__card');
+      pinElement.classList.add('map__pin--active');
       if (adCard) {
         document.removeEventListener('keydown', adCardCloseKeydownHandler);
         adCard.remove();
+      }
+      if (!pinElement.classList.contains('map__pin--active')) {
+        var pinElementActive = document.querySelector('.map__pin--active');
+        pinElementActive.classList.remove('map__pin--active');
       }
       map.appendChild(window.createCard(card));
     });

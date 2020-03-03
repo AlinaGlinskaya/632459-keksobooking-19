@@ -29,9 +29,10 @@
     }
   };
 
-  // Функция активации карты и формы
-
-  var switchToActiveState = function () {
+  /**
+    Функция активации карты и формы
+    */
+  /* var switchToActiveState = function () {
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
     mapFilterFeatures.removeAttribute('disabled');
@@ -44,6 +45,25 @@
       fragment.appendChild(window.pin.createPin(advertisement[i]));
     }
     mapPinsList.appendChild(fragment);
+  };*/
+
+  /**
+    Функция активации карты и формы
+    */
+  var switchToActiveState = function () {
+    map.classList.remove('map--faded');
+    adForm.classList.remove('ad-form--disabled');
+    mapFilterFeatures.removeAttribute('disabled');
+    fieldsetAdHeader.removeAttribute('disabled');
+    removeDisableAttr(mapFilterInputs);
+    removeDisableAttr(fieldsetAdText);
+    window.load(function (advertisement) {
+      var fragment = document.createDocumentFragment();
+      for (var i = 0; i < advertisement.length; i++) {
+        fragment.appendChild(window.pin.createPin(advertisement[i]));
+      }
+      mapPinsList.appendChild(fragment);
+    });
   };
 
   var pinClickActivateMapHandler = function (evt) {
