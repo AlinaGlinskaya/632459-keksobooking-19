@@ -3,8 +3,12 @@
 (function () {
 
   var ENTER_KEY = 'Enter';
+  var LIMIT_TOP = 130;
+  var LIMIT_BOTTOM = 630;
+  var LIMIT_LEFT = 0;
 
   var map = document.querySelector('.map');
+  var mapWidth = map.offsetWidth;
   var adForm = document.querySelector('.ad-form');
   var mapFilterInputs = document.querySelectorAll('.map__filter');
   var mapFilterFeatures = document.querySelector('.map__features');
@@ -43,12 +47,51 @@
   };
 
   var pinClickActivateMapHandler = function (evt) {
-    if (evt.button === 0) {
+    if ((evt.button === 0) && (adForm.classList.contains('ad-form--disabled'))) {
       switchToActiveState();
       window.form.getAddress();
-      var mainPin = document.querySelector('.map__pin--main');
-      mainPin.removeEventListener('mousedown', pinClickActivateMapHandler);
     }
+    evt.preventDefault();
+    var startCoordinates = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var pinDragMousemoveHandler = function (moveEvt) {
+      moveEvt.preventDefault();
+      window.form.getAddress();
+
+      var shift = {
+        x: startCoordinates.x - moveEvt.clientX,
+        y: startCoordinates.y - moveEvt.clientY
+      };
+
+      startCoordinates = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      var newOffsetTop = mapPinMain.offsetTop - shift.y;
+      if ((newOffsetTop + mapPinMain.clientHeight) > LIMIT_TOP && (newOffsetTop + mapPinMain.clientHeight) < LIMIT_BOTTOM) {
+        mapPinMain.style.top = newOffsetTop + 'px';
+      }
+
+      var newoffsetLeft = mapPinMain.offsetLeft - shift.x;
+      if (newoffsetLeft > LIMIT_LEFT && newoffsetLeft < (mapWidth - mapPinMain.clientWidth)) {
+        mapPinMain.style.left = newoffsetLeft + 'px';
+      }
+    };
+
+    var pinDragMouseupHandler = function (upEvt) {
+      upEvt.preventDefault();
+      window.form.getAddress();
+
+      document.removeEventListener('mousemove', pinDragMousemoveHandler);
+      document.removeEventListener('mouseup', pinDragMouseupHandler);
+    };
+
+    document.addEventListener('mousemove', pinDragMousemoveHandler);
+    document.addEventListener('mouseup', pinDragMouseupHandler);
   };
 
   var pinKeydownActivateMapHandler = function (evt) {
@@ -61,7 +104,6 @@
   };
 
   mapPinMain.addEventListener('mousedown', pinClickActivateMapHandler);
-
   mapPinMain.addEventListener('keydown', pinKeydownActivateMapHandler);
 
   addDisableAttr(mapFilterInputs);
