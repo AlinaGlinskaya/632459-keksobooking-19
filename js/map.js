@@ -32,24 +32,6 @@
   /**
     Функция активации карты и формы
     */
-  /* var switchToActiveState = function () {
-    map.classList.remove('map--faded');
-    adForm.classList.remove('ad-form--disabled');
-    mapFilterFeatures.removeAttribute('disabled');
-    fieldsetAdHeader.removeAttribute('disabled');
-    removeDisableAttr(mapFilterInputs);
-    removeDisableAttr(fieldsetAdText);
-    var advertisement = window.createData();
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < advertisement.length; i++) {
-      fragment.appendChild(window.pin.createPin(advertisement[i]));
-    }
-    mapPinsList.appendChild(fragment);
-  };*/
-
-  /**
-    Функция активации карты и формы
-    */
   var switchToActiveState = function () {
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
@@ -123,11 +105,28 @@
     }
   };
 
+  /**
+    Функция перевода карты и формы в неактивное состояние
+    */
+  window.switchToInactiveState = function () {
+    var pins = map.querySelectorAll('.map__pin');
+    for (var i = 0; i < pins.length; i++) {
+      if (!pins[i].classList.contains('map__pin--main')) {
+        pins[i].remove();
+      }
+    }
+    map.classList.add('map--faded');
+    adForm.reset();
+    adForm.classList.add('ad-form--disabled');
+    addDisableAttr(mapFilterInputs);
+    addDisableAttr(fieldsetAdText);
+    mapFilterFeatures.setAttribute('disabled', '');
+    fieldsetAdHeader.setAttribute('disabled', '');
+  };
+
+  window.switchToInactiveState();
+
   mapPinMain.addEventListener('mousedown', pinClickActivateMapHandler);
   mapPinMain.addEventListener('keydown', pinKeydownActivateMapHandler);
 
-  addDisableAttr(mapFilterInputs);
-  addDisableAttr(fieldsetAdText);
-  mapFilterFeatures.setAttribute('disabled', '');
-  fieldsetAdHeader.setAttribute('disabled', '');
 })();

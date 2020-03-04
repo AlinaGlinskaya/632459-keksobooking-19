@@ -118,6 +118,9 @@
   });
 
   adForm.addEventListener('submit', function (evt) {
+    window.upload(new FormData(adForm), function () {
+      window.switchToInactiveState();
+    });
     evt.preventDefault();
   });
 
