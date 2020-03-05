@@ -10,6 +10,7 @@
   var priceInput = adForm.querySelector('#price');
   var addressInput = adForm.querySelector('#address');
   var mapPinMain = document.querySelector('.map__pin--main');
+  var resetButton = adForm.querySelector('.ad-form__reset');
 
   var checkCapacity = function () {
     switch (roomSelectElement.value) {
@@ -97,6 +98,11 @@
     }
   };
 
+  var resetButtonClickHandler = function () {
+    window.switchToInactiveState();
+    resetButton.removeEventListener('click', resetButtonClickHandler);
+  };
+
   roomSelectElement.addEventListener('change', function () {
     checkCapacity();
   });
@@ -118,13 +124,21 @@
   });
 
   adForm.addEventListener('submit', function (evt) {
-    window.upload(new FormData(adForm), function () {
+    window.load.uploadAdData(new FormData(adForm), function () {
       window.switchToInactiveState();
+      window.load.successHandler();
+    },
+    function () {
+      window.load.errorHandler();
     });
     evt.preventDefault();
   });
 
   getAddress();
+
+  resetButton.addEventListener('click', function () {
+    resetButtonClickHandler();
+  });
 
   window.form = {
     getAddress: getAddress,

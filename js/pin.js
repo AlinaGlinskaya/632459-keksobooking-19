@@ -54,5 +54,6 @@
     createPin: createPin,
     pinMainWidth: pinMainWidth,
     pinMainHeight: pinMainHeight,
+    adCardCloseKeydownHandler: adCardCloseKeydownHandler,
   };
 })();
