@@ -47,7 +47,8 @@
         fragment.appendChild(window.pin.createPin(advertisement[i]));
       }
       mapPinsList.appendChild(fragment);
-    });
+    },
+    window.load.errorLoadHandler);
   };
 
   var pinClickActivateMapHandler = function (evt) {

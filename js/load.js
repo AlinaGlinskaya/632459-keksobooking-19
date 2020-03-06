@@ -13,7 +13,6 @@
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
-
     xhr.addEventListener('load', function () {
       if (xhr.status === 200) {
         onSuccess(xhr.response);
@@ -25,6 +24,12 @@
     xhr.addEventListener('error', function () {
       onError('Произошла ошибка соединения');
     });
+
+    xhr.addEventListener('timeout', function () {
+      onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+    });
+
+    xhr.timeout = 10000;
 
     xhr.open('GET', URL);
     xhr.send();
@@ -58,11 +63,23 @@
     document.addEventListener('click', successMessageClickHandler);
   };
 
-  var errorHandler = function () {
+  var errorUploadHandler = function () {
     var errorMessage = errorMessageTemplate.cloneNode(true);
     main.appendChild(errorMessage);
     document.addEventListener('keydown', errorMessageKeydownHandler);
     document.addEventListener('click', errorMessageClickHandler);
+    var errorMessageElement = document.querySelector('.error');
+    var errorButton = errorMessageElement.querySelector('.error__button');
+    errorButton.addEventListener('click', errorButtonClickHandler);
+  };
+
+  var errorLoadHandler = function (errorText) {
+    var errorMessage = errorMessageTemplate.cloneNode(true);
+    var errorMessageText = errorMessage.querySelector('.error__message');
+    errorMessageText.textContent = errorText;
+    main.appendChild(errorMessage);
+    document.addEventListener('click', errorMessageClickHandler);
+    document.addEventListener('keydown', errorMessageKeydownHandler);
     var errorMessageElement = document.querySelector('.error');
     var errorButton = errorMessageElement.querySelector('.error__button');
     errorButton.addEventListener('click', errorButtonClickHandler);
@@ -73,6 +90,7 @@
       var errorMessageElement = document.querySelector('.error');
       errorMessageElement.remove();
       document.removeEventListener('keydown', errorMessageKeydownHandler);
+      document.removeEventListener('click', errorMessageClickHandler);
     }
   };
 
@@ -80,6 +98,7 @@
     var errorMessageElement = document.querySelector('.error');
     errorMessageElement.remove();
     document.removeEventListener('click', errorMessageClickHandler);
+    document.removeEventListener('keydown', errorMessageKeydownHandler);
   };
 
   var errorButtonClickHandler = function () {
@@ -108,6 +127,7 @@
     loadAdsData: loadAdsData,
     uploadAdData: uploadAdData,
     successHandler: successHandler,
-    errorHandler: errorHandler,
+    errorUploadHandler: errorUploadHandler,
+    errorLoadHandler: errorLoadHandler,
   };
 })();

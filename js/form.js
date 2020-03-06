@@ -129,7 +129,7 @@
       window.load.successHandler();
     },
     function () {
-      window.load.errorHandler();
+      window.load.errorUploadHandler();
     });
     evt.preventDefault();
   });
