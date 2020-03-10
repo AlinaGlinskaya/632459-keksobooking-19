@@ -8,6 +8,7 @@
   var LIMIT_LEFT = 0;
   var MAIN_PIN_START_LEFT = 570;
   var MAIN_PIN_START_TOP = 375;
+  var ADS_AMOUNT = 5;
 
   var map = document.querySelector('.map');
   var mapWidth = map.offsetWidth;
@@ -18,6 +19,8 @@
   var fieldsetAdText = document.querySelectorAll('.ad-form__element');
   var mapPinMain = document.querySelector('.map__pin--main');
   var mapPinsList = document.querySelector('.map__pins');
+
+  var advertisements;
 
   var addDisableAttr = function (fields) {
     for (var i = 0; i < fields.length; i++) {
@@ -41,10 +44,13 @@
     fieldsetAdHeader.removeAttribute('disabled');
     removeDisableAttr(mapFilterInputs);
     removeDisableAttr(fieldsetAdText);
-    window.load.loadAdsData(function (advertisement) {
+
+    window.load.loadAdsData(function (ads) {
+      advertisements = ads;
+      window.advertisements = advertisements;
       var fragment = document.createDocumentFragment();
-      for (var i = 0; i < advertisement.length; i++) {
-        fragment.appendChild(window.pin.createPin(advertisement[i]));
+      for (var i = 0; i < ADS_AMOUNT; i++) {
+        fragment.appendChild(window.pin.createPin(ads[i]));
       }
       mapPinsList.appendChild(fragment);
     },
@@ -108,28 +114,16 @@
     }
   };
 
-  /**
-    Функция перевода карты и формы в неактивное состояние
-    */
-  window.switchToInactiveState = function () {
+  var removePins = function () {
     var pins = map.querySelectorAll('.map__pin');
     for (var i = 0; i < pins.length; i++) {
       if (!pins[i].classList.contains('map__pin--main')) {
         pins[i].remove();
       }
     }
+  };
 
-    map.classList.add('map--faded');
-    adForm.reset();
-    adForm.classList.add('ad-form--disabled');
-    addDisableAttr(mapFilterInputs);
-    addDisableAttr(fieldsetAdText);
-    mapFilterFeatures.setAttribute('disabled', '');
-    fieldsetAdHeader.setAttribute('disabled', '');
-    mapPinMain.style.left = MAIN_PIN_START_LEFT + 'px';
-    mapPinMain.style.top = MAIN_PIN_START_TOP + 'px';
-    window.form.getAddress();
-
+  var removeCard = function () {
     var adCard = document.querySelector('.map__card');
     if (adCard) {
       adCard.remove();
@@ -137,9 +131,34 @@
     }
   };
 
-  window.switchToInactiveState();
+  /**
+    Функция перевода карты и формы в неактивное состояние
+    */
+  var switchToInactiveState = function () {
+    removePins();
+    removeCard();
+    map.classList.add('map--faded');
+    adForm.reset();
+    adForm.classList.add('ad-form--disabled');
+    addDisableAttr(mapFilterInputs);
+    addDisableAttr(fieldsetAdText);
+    mapFilterFeatures.setAttribute('disabled', '');
+    fieldsetAdHeader.setAttribute('disabled', '');
+
+    mapPinMain.style.left = MAIN_PIN_START_LEFT + 'px';
+    mapPinMain.style.top = MAIN_PIN_START_TOP + 'px';
+    window.form.getAddress();
+  };
 
   mapPinMain.addEventListener('mousedown', pinClickActivateMapHandler);
   mapPinMain.addEventListener('keydown', pinKeydownActivateMapHandler);
+
+  window.map = {
+    ADS_AMOUNT: ADS_AMOUNT,
+    mapPinsList: mapPinsList,
+    switchToInactiveState: switchToInactiveState,
+    removePins: removePins,
+    removeCard: removeCard,
+  };
 
 })();
