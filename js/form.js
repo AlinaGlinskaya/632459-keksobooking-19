@@ -99,7 +99,7 @@
   };
 
   var resetButtonClickHandler = function () {
-    window.switchToInactiveState();
+    window.map.switchToInactiveState();
     resetButton.removeEventListener('click', resetButtonClickHandler);
   };
 
@@ -125,7 +125,7 @@
 
   adForm.addEventListener('submit', function (evt) {
     window.load.uploadAdData(new FormData(adForm), function () {
-      window.switchToInactiveState();
+      window.map.switchToInactiveState();
       window.load.successHandler();
     },
     function () {

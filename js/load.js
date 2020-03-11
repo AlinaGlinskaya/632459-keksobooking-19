@@ -83,7 +83,6 @@
     var errorMessageElement = document.querySelector('.error');
     var errorButton = errorMessageElement.querySelector('.error__button');
     errorButton.addEventListener('click', errorButtonClickHandler);
-    window.filter.inactivateFilter();
   };
 
   var errorMessageKeydownHandler = function (evt) {

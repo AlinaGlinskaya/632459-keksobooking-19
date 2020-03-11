@@ -88,7 +88,7 @@
       }
 
       var newoffsetLeft = mapPinMain.offsetLeft - shift.x;
-      if (newoffsetLeft > LIMIT_LEFT && newoffsetLeft < (mapWidth - mapPinMain.clientWidth)) {
+      if (newoffsetLeft > (LIMIT_LEFT - window.pin.pinMainWidth / 2) && newoffsetLeft < (mapWidth - mapPinMain.clientWidth / 2)) {
         mapPinMain.style.left = newoffsetLeft + 'px';
       }
     };
