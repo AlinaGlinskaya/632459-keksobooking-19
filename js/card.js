@@ -3,8 +3,8 @@
 (function () {
 
   var ESC_KEY = 'Escape';
-
-  var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+  var PHOTO_WIDTH = 45;
+  var PHOTO_HEIGHT = 40;
 
   var HouseType = {
     'FLAT': 'Квартира',
@@ -13,6 +13,8 @@
     'HOUSE': 'Дом'
   };
 
+  var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
+
   /**
   * @param {object} cardData - объект с данными объявления
   * @param {object} photoListElement - элемент, в который добавляются изображения
@@ -20,7 +22,7 @@
   var createPhoto = function (cardData, photoListElement) {
     var photos = cardData.offer.photos;
     for (var i = 0; i < photos.length; i++) {
-      var img = new Image(45, 40);
+      var img = new Image(PHOTO_WIDTH, PHOTO_HEIGHT);
       img.src = photos[i];
       img.classList.add('popup__photo');
       img.alt = cardData.offer.title;

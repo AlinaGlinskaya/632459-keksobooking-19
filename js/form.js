@@ -1,6 +1,13 @@
 'use strict';
 
 (function () {
+
+  var CheckinTime = {
+    '12': '12:00',
+    '13': '13:00',
+    '14': '14:00',
+  };
+
   var adForm = document.querySelector('.ad-form');
   var roomSelectElement = adForm.querySelector('#room_number');
   var guestSelectElement = adForm.querySelector('#capacity');
@@ -11,6 +18,7 @@
   var addressInput = adForm.querySelector('#address');
   var mapPinMain = document.querySelector('.map__pin--main');
   var resetButton = adForm.querySelector('.ad-form__reset');
+
 
   var checkCapacity = function () {
     switch (roomSelectElement.value) {
@@ -50,13 +58,13 @@
 
   var changeTimeOption = function (select, option) {
     switch (select.value) {
-      case '12:00':
+      case CheckinTime[12]:
         option.value = '12:00';
         break;
-      case '13:00':
+      case CheckinTime[13]:
         option.value = '13:00';
         break;
-      case '14:00':
+      case CheckinTime[14]:
         option.value = '14:00';
         break;
     }

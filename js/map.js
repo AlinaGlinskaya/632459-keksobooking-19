@@ -153,6 +153,8 @@
   mapPinMain.addEventListener('mousedown', pinClickActivateMapHandler);
   mapPinMain.addEventListener('keydown', pinKeydownActivateMapHandler);
 
+  switchToInactiveState();
+
   window.map = {
     ADS_AMOUNT: ADS_AMOUNT,
     mapPinsList: mapPinsList,
