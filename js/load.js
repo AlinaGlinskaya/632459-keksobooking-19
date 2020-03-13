@@ -13,7 +13,7 @@
 
   var successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
   var errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
-  var main = document.querySelector('main');
+  var mainElement = document.querySelector('main');
 
   var loadAdsData = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
@@ -63,14 +63,14 @@
 
   var successHandler = function () {
     var successMessage = successMessageTemplate.cloneNode(true);
-    main.appendChild(successMessage);
+    mainElement.appendChild(successMessage);
     document.addEventListener('keydown', successMessageKeydownHandler);
     document.addEventListener('click', successMessageClickHandler);
   };
 
   var errorUploadHandler = function () {
     var errorMessage = errorMessageTemplate.cloneNode(true);
-    main.appendChild(errorMessage);
+    mainElement.appendChild(errorMessage);
     document.addEventListener('keydown', errorMessageKeydownHandler);
     document.addEventListener('click', errorMessageClickHandler);
     var errorMessageElement = document.querySelector('.error');
@@ -82,7 +82,7 @@
     var errorMessage = errorMessageTemplate.cloneNode(true);
     var errorMessageText = errorMessage.querySelector('.error__message');
     errorMessageText.textContent = errorText;
-    main.appendChild(errorMessage);
+    mainElement.appendChild(errorMessage);
     document.addEventListener('click', errorMessageClickHandler);
     document.addEventListener('keydown', errorMessageKeydownHandler);
     var errorMessageElement = document.querySelector('.error');

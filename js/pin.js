@@ -7,10 +7,10 @@
   var ESC_KEY = 'Escape';
 
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
-  var map = document.querySelector('.map');
-  var mapPinMain = document.querySelector('.map__pin--main');
-  var pinMainWidth = mapPinMain.offsetWidth;
-  var pinMainHeight = mapPinMain.offsetHeight;
+  var mapElement = document.querySelector('.map');
+  var mapPinMainElement = document.querySelector('.map__pin--main');
+  var pinMainWidth = mapPinMainElement.offsetWidth;
+  var pinMainHeight = mapPinMainElement.offsetHeight;
 
 
   var adCardCloseKeydownHandler = function (evt) {
@@ -42,7 +42,7 @@
           adCard.remove();
         }
 
-        map.appendChild(window.createCard(card));
+        mapElement.appendChild(window.createCard(card));
 
         pinElement.classList.add('map__pin--active');
       }

@@ -10,15 +10,15 @@
   var MAIN_PIN_START_TOP = 375;
   var ADS_AMOUNT = 5;
 
-  var map = document.querySelector('.map');
-  var mapWidth = map.offsetWidth;
-  var adForm = document.querySelector('.ad-form');
+  var mapElement = document.querySelector('.map');
+  var mapWidth = mapElement.offsetWidth;
+  var adFormElement = document.querySelector('.ad-form');
   var mapFilterInputs = document.querySelectorAll('.map__filter');
-  var mapFilterFeatures = document.querySelector('.map__features');
-  var fieldsetAdHeader = document.querySelector('.ad-form-header');
+  var mapFilterFeaturesElement = document.querySelector('.map__features');
+  var fieldsetAdHeaderElement = document.querySelector('.ad-form-header');
   var fieldsetAdText = document.querySelectorAll('.ad-form__element');
-  var mapPinMain = document.querySelector('.map__pin--main');
-  var mapPinsList = document.querySelector('.map__pins');
+  var mapPinMainElement = document.querySelector('.map__pin--main');
+  var mapPinsListElement = document.querySelector('.map__pins');
 
   var advertisements;
 
@@ -38,10 +38,10 @@
     Функция активации карты и формы
     */
   var switchToActiveState = function () {
-    map.classList.remove('map--faded');
-    adForm.classList.remove('ad-form--disabled');
-    mapFilterFeatures.removeAttribute('disabled');
-    fieldsetAdHeader.removeAttribute('disabled');
+    mapElement.classList.remove('map--faded');
+    adFormElement.classList.remove('ad-form--disabled');
+    mapFilterFeaturesElement.removeAttribute('disabled');
+    fieldsetAdHeaderElement.removeAttribute('disabled');
     removeDisableAttr(mapFilterInputs);
     removeDisableAttr(fieldsetAdText);
 
@@ -52,13 +52,13 @@
       for (var i = 0; i < ADS_AMOUNT; i++) {
         fragment.appendChild(window.pin.createPin(ads[i]));
       }
-      mapPinsList.appendChild(fragment);
+      mapPinsListElement.appendChild(fragment);
     },
     window.load.errorLoadHandler);
   };
 
   var pinClickActivateMapHandler = function (evt) {
-    if ((evt.button === 0) && (adForm.classList.contains('ad-form--disabled'))) {
+    if ((evt.button === 0) && (adFormElement.classList.contains('ad-form--disabled'))) {
       switchToActiveState();
       window.form.getAddress();
     }
@@ -82,14 +82,14 @@
         y: moveEvt.clientY
       };
 
-      var newOffsetTop = mapPinMain.offsetTop - shift.y;
-      if ((newOffsetTop + mapPinMain.clientHeight) > LIMIT_TOP && (newOffsetTop + mapPinMain.clientHeight) < LIMIT_BOTTOM) {
-        mapPinMain.style.top = newOffsetTop + 'px';
+      var newOffsetTop = mapPinMainElement.offsetTop - shift.y;
+      if ((newOffsetTop + mapPinMainElement.clientHeight) > LIMIT_TOP && (newOffsetTop + mapPinMainElement.clientHeight) < LIMIT_BOTTOM) {
+        mapPinMainElement.style.top = newOffsetTop + 'px';
       }
 
-      var newoffsetLeft = mapPinMain.offsetLeft - shift.x;
-      if (newoffsetLeft > (LIMIT_LEFT - window.pin.pinMainWidth / 2) && newoffsetLeft < (mapWidth - mapPinMain.clientWidth / 2)) {
-        mapPinMain.style.left = newoffsetLeft + 'px';
+      var newoffsetLeft = mapPinMainElement.offsetLeft - shift.x;
+      if (newoffsetLeft > (LIMIT_LEFT - window.pin.pinMainWidth / 2) && newoffsetLeft < (mapWidth - mapPinMainElement.clientWidth / 2)) {
+        mapPinMainElement.style.left = newoffsetLeft + 'px';
       }
     };
 
@@ -115,7 +115,7 @@
   };
 
   var removePins = function () {
-    var pins = map.querySelectorAll('.map__pin');
+    var pins = mapElement.querySelectorAll('.map__pin');
     for (var i = 0; i < pins.length; i++) {
       if (!pins[i].classList.contains('map__pin--main')) {
         pins[i].remove();
@@ -137,27 +137,27 @@
   var switchToInactiveState = function () {
     removePins();
     removeCard();
-    map.classList.add('map--faded');
-    adForm.reset();
-    adForm.classList.add('ad-form--disabled');
+    mapElement.classList.add('map--faded');
+    adFormElement.reset();
+    adFormElement.classList.add('ad-form--disabled');
     addDisableAttr(mapFilterInputs);
     addDisableAttr(fieldsetAdText);
-    mapFilterFeatures.setAttribute('disabled', '');
-    fieldsetAdHeader.setAttribute('disabled', '');
+    mapFilterFeaturesElement.setAttribute('disabled', '');
+    fieldsetAdHeaderElement.setAttribute('disabled', '');
 
-    mapPinMain.style.left = MAIN_PIN_START_LEFT + 'px';
-    mapPinMain.style.top = MAIN_PIN_START_TOP + 'px';
+    mapPinMainElement.style.left = MAIN_PIN_START_LEFT + 'px';
+    mapPinMainElement.style.top = MAIN_PIN_START_TOP + 'px';
     window.form.getAddress();
   };
 
-  mapPinMain.addEventListener('mousedown', pinClickActivateMapHandler);
-  mapPinMain.addEventListener('keydown', pinKeydownActivateMapHandler);
+  mapPinMainElement.addEventListener('mousedown', pinClickActivateMapHandler);
+  mapPinMainElement.addEventListener('keydown', pinKeydownActivateMapHandler);
 
   switchToInactiveState();
 
   window.map = {
     ADS_AMOUNT: ADS_AMOUNT,
-    mapPinsList: mapPinsList,
+    mapPinsListElement: mapPinsListElement,
     switchToInactiveState: switchToInactiveState,
     removePins: removePins,
     removeCard: removeCard,

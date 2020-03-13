@@ -8,16 +8,16 @@
     '14': '14:00',
   };
 
-  var adForm = document.querySelector('.ad-form');
-  var roomSelectElement = adForm.querySelector('#room_number');
-  var guestSelectElement = adForm.querySelector('#capacity');
-  var timeInSelectElement = adForm.querySelector('#timein');
-  var timeOutSelectElement = adForm.querySelector('#timeout');
-  var houseTypeSelectElement = adForm.querySelector('#type');
-  var priceInput = adForm.querySelector('#price');
-  var addressInput = adForm.querySelector('#address');
-  var mapPinMain = document.querySelector('.map__pin--main');
-  var resetButton = adForm.querySelector('.ad-form__reset');
+  var adFormElement = document.querySelector('.ad-form');
+  var roomSelectElement = adFormElement.querySelector('#room_number');
+  var guestSelectElement = adFormElement.querySelector('#capacity');
+  var timeInSelectElement = adFormElement.querySelector('#timein');
+  var timeOutSelectElement = adFormElement.querySelector('#timeout');
+  var houseTypeSelectElement = adFormElement.querySelector('#type');
+  var priceInputElement = adFormElement.querySelector('#price');
+  var addressInputElement = adFormElement.querySelector('#address');
+  var mapPinMainElement = document.querySelector('.map__pin--main');
+  var resetButtonElement = adFormElement.querySelector('.ad-form__reset');
 
 
   var checkCapacity = function () {
@@ -73,20 +73,20 @@
   var setMinPrice = function () {
     switch (houseTypeSelectElement.value) {
       case 'bungalo':
-        priceInput.setAttribute('min', '0');
-        priceInput.placeholder = '0';
+        priceInputElement.setAttribute('min', '0');
+        priceInputElement.placeholder = '0';
         break;
       case 'flat':
-        priceInput.setAttribute('min', '1000');
-        priceInput.placeholder = '1000';
+        priceInputElement.setAttribute('min', '1000');
+        priceInputElement.placeholder = '1000';
         break;
       case 'house':
-        priceInput.setAttribute('min', '5000');
-        priceInput.placeholder = '5000';
+        priceInputElement.setAttribute('min', '5000');
+        priceInputElement.placeholder = '5000';
         break;
       case 'palace':
-        priceInput.setAttribute('min', '10000');
-        priceInput.placeholder = '10000';
+        priceInputElement.setAttribute('min', '10000');
+        priceInputElement.placeholder = '10000';
         break;
     }
   };
@@ -95,20 +95,20 @@
     Заполняет поле «адрес» в формате: «координата по оси X, координата по оси Y»
     */
   var getAddress = function () {
-    var x = mapPinMain.offsetLeft;
+    var x = mapPinMainElement.offsetLeft;
     var pinMainX = x + window.pin.pinMainWidth / 2;
-    var y = mapPinMain.offsetTop;
+    var y = mapPinMainElement.offsetTop;
     var pinMainY = y + window.pin.pinMainHeight;
-    if (adForm.classList.contains('ad-form--disabled')) {
-      addressInput.value = Math.round(pinMainX) + ', ' + Math.round(pinMainY - window.pin.pinMainHeight / 2);
+    if (adFormElement.classList.contains('ad-form--disabled')) {
+      addressInputElement.value = Math.round(pinMainX) + ', ' + Math.round(pinMainY - window.pin.pinMainHeight / 2);
     } else {
-      addressInput.value = Math.round(pinMainX) + ', ' + Math.round(pinMainY);
+      addressInputElement.value = Math.round(pinMainX) + ', ' + Math.round(pinMainY);
     }
   };
 
   var resetButtonClickHandler = function () {
     window.map.switchToInactiveState();
-    resetButton.removeEventListener('click', resetButtonClickHandler);
+    resetButtonElement.removeEventListener('click', resetButtonClickHandler);
   };
 
   roomSelectElement.addEventListener('change', function () {
@@ -131,8 +131,8 @@
     setMinPrice();
   });
 
-  adForm.addEventListener('submit', function (evt) {
-    window.load.uploadAdData(new FormData(adForm), function () {
+  adFormElement.addEventListener('submit', function (evt) {
+    window.load.uploadAdData(new FormData(adFormElement), function () {
       window.map.switchToInactiveState();
       window.load.successHandler();
     },
@@ -144,7 +144,7 @@
 
   getAddress();
 
-  resetButton.addEventListener('click', function () {
+  resetButtonElement.addEventListener('click', function () {
     resetButtonClickHandler();
   });
 

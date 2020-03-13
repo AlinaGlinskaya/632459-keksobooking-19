@@ -5,12 +5,12 @@
   var LOW_PRICE = 10000;
   var HIGH_PRICE = 50000;
 
-  var filterForm = document.querySelector('.map__filters');
-  var houseTypeSelect = filterForm.querySelector('#housing-type');
-  var housePriceSelect = filterForm.querySelector('#housing-price');
-  var houseRoomSelect = filterForm.querySelector('#housing-rooms');
-  var houseGuestSelect = filterForm.querySelector('#housing-guests');
-  var filterFeatures = filterForm.querySelectorAll('.map__checkbox');
+  var filterFormElement = document.querySelector('.map__filters');
+  var houseTypeSelectElement = filterFormElement.querySelector('#housing-type');
+  var housePriceSelectElement = filterFormElement.querySelector('#housing-price');
+  var houseRoomSelectElement = filterFormElement.querySelector('#housing-rooms');
+  var houseGuestSelectElement = filterFormElement.querySelector('#housing-guests');
+  var filterFeatures = filterFormElement.querySelectorAll('.map__checkbox');
 
   var getPriceRange = function (price) {
     var selectValue;
@@ -28,34 +28,57 @@
     return selectValue;
   };
 
-  var compareArrays = function (arr1, arr2) {
-    for (var i = 0; i < arr1.length; i++) {
-      arr2.includes(arr1[i]);
+  var changeInputHandler = function () {
+    var ads = [];
+    window.map.removePins();
+    window.map.removeCard();
+
+    for (var i = 0; i < window.advertisements.length; i++) {
+      if ((houseTypeSelectElement.value === 'any' ||
+      window.advertisements[i].offer.type === houseTypeSelectElement.value) &&
+
+      (housePriceSelectElement.value === 'any' ||
+      getPriceRange(window.advertisements[i].offer.price) === housePriceSelectElement.value) &&
+
+      (houseRoomSelectElement.value === 'any' ||
+      window.advertisements[i].offer.rooms === Number(houseRoomSelectElement.value)) &&
+
+      (houseGuestSelectElement.value === 'any' ||
+      window.advertisements[i].offer.guests === Number(houseGuestSelectElement.value))) {
+        ads.push(window.advertisements[i]);
+      }
+
+      var fragment = document.createDocumentFragment();
+      for (var a = 0; a < ads.length && a < window.map.ADS_AMOUNT; a++) {
+        fragment.appendChild(window.pin.createPin(ads[a]));
+      }
+      window.map.mapPinsListElement.appendChild(fragment);
     }
+
   };
 
-  var changeInputHandler = function () {
+  /* var changeInputHandler = function () {
     var ads = window.advertisements.slice();
 
-    if (houseTypeSelect.value !== 'any') {
+    if (houseTypeSelectElement.value !== 'any') {
       ads = ads.filter(function (ad) {
-        return ad.offer.type === houseTypeSelect.value;
+        return ad.offer.type === houseTypeSelectElement.value;
       });
     }
-    if (housePriceSelect.value !== 'any') {
+    if (housePriceSelectElement.value !== 'any') {
       ads = ads.filter(function (ad) {
         var priceRange = getPriceRange(ad.offer.price);
-        return priceRange === housePriceSelect.value;
+        return priceRange === housePriceSelectElement.value;
       });
     }
-    if (houseRoomSelect.value !== 'any') {
+    if (houseRoomSelectElement.value !== 'any') {
       ads = ads.filter(function (ad) {
-        return ad.offer.rooms === Number(houseRoomSelect.value);
+        return ad.offer.rooms === Number(houseRoomSelectElement.value);
       });
     }
-    if (houseGuestSelect.value !== 'any') {
+    if (houseGuestSelectElement.value !== 'any') {
       ads = ads.filter(function (ad) {
-        return ad.offer.guests === Number(houseGuestSelect.value);
+        return ad.offer.guests === Number(houseGuestSelectElement.value);
       });
     }
 
@@ -67,10 +90,6 @@
       }
     }
 
-    ads = ads.filter(function (ad) {
-      return compareArrays(featuresChecked, ad.offer.features);
-    });
-
     window.map.removePins();
     window.map.removeCard();
 
@@ -78,10 +97,21 @@
     for (var i = 0; i < window.map.ADS_AMOUNT && i < ads.length; i++) {
       fragment.appendChild(window.pin.createPin(ads[i]));
     }
-    window.map.mapPinsList.appendChild(fragment);
-  };
+    window.map.mapPinsListElement.appendChild(fragment);
+    }
+  };*/
 
-  filterForm.addEventListener('change', changeInputHandler);
+  /* var compareArrays = function (arr1, arr2) {
+    for (var i = 0; i < arr1.length; i++) {
+      arr2.includes(arr1[i]);
+    }
+  };*/
+
+  /* ads = ads.filter(function (ad) {
+      return compareArrays(featuresChecked, ad.offer.features);
+    });*/
+
+  filterFormElement.addEventListener('change', changeInputHandler);
 
 })();
 

@@ -17,16 +17,16 @@
 
   /**
   * @param {object} cardData - объект с данными объявления
-  * @param {object} photoListElement - элемент, в который добавляются изображения
+  * @param {object} photoList - элемент, в который добавляются изображения
   */
-  var createPhoto = function (cardData, photoListElement) {
+  var createPhoto = function (cardData, photoList) {
     var photos = cardData.offer.photos;
     for (var i = 0; i < photos.length; i++) {
       var img = new Image(PHOTO_WIDTH, PHOTO_HEIGHT);
       img.src = photos[i];
       img.classList.add('popup__photo');
       img.alt = cardData.offer.title;
-      photoListElement.appendChild(img);
+      photoList.appendChild(img);
     }
   };
 
@@ -63,9 +63,9 @@
 
     document.addEventListener('keydown', adCardCloseKeydownHandler);
 
-    var photoList = cardElement.querySelector('.popup__photos');
-    photoList.innerHTML = '';
-    createPhoto(card, photoList);
+    var photoListElement = cardElement.querySelector('.popup__photos');
+    photoListElement.innerHTML = '';
+    createPhoto(card, photoListElement);
     return cardElement;
   };
 })();
