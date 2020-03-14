@@ -19,7 +19,6 @@
   var mapPinMainElement = document.querySelector('.map__pin--main');
   var resetButtonElement = adFormElement.querySelector('.ad-form__reset');
 
-
   var checkCapacity = function () {
     switch (roomSelectElement.value) {
       case '1':
