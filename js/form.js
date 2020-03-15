@@ -127,6 +127,27 @@
     }
   };
 
+  /**
+    Функция подсветки невалидных полей
+    * @param {object} field - невалидное поле
+    */
+  var highLightInvalidFields = function (field) {
+    var invalidFields = [];
+    if (!field.validity.valid) {
+      invalidFields.push(field);
+      invalidFields.forEach(function () {
+        field.style = 'border: 2px solid red';
+      });
+    } else {
+      field.style = 'border: none';
+    }
+  };
+
+  var invalidFormHandler = function (evt) {
+    var field = evt.target;
+    highLightInvalidFields(field);
+  };
+
   var resetButtonClickHandler = function () {
     window.map.switchToInactiveState();
     resetButtonElement.removeEventListener('click', resetButtonClickHandler);
@@ -151,6 +172,8 @@
   houseTypeSelectElement.addEventListener('change', function () {
     setMinPrice();
   });
+
+  adFormElement.addEventListener('change', invalidFormHandler);
 
   adFormElement.addEventListener('submit', function (evt) {
     window.load.uploadAdData(new FormData(adFormElement), function () {
