@@ -129,9 +129,10 @@
 
   /**
     Функция подсветки невалидных полей
-    * @param {object} field - невалидное поле
+    * @param {object} field - поле формы
     */
   var highLightInvalidFields = function (field) {
+    debugger;
     var invalidFields = [];
     if (!field.validity.valid) {
       invalidFields.push(field);

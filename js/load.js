@@ -96,6 +96,8 @@
     var errorMessageElement = document.querySelector('.error');
     var errorButton = errorMessageElement.querySelector('.error__button');
     errorButton.addEventListener('click', errorButtonClickHandler);
+    window.switchFilterToInactiveState();
+    window.map.mapPinMainElement.addEventListener('click', window.map.unsuccessLoadHandler);
   };
 
   var errorMessageKeydownHandler = function (evt) {

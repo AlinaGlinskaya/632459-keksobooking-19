@@ -34,17 +34,7 @@
     }
   };
 
-  /**
-    Функция активации карты и формы
-    */
-  var switchToActiveState = function () {
-    mapElement.classList.remove('map--faded');
-    adFormElement.classList.remove('ad-form--disabled');
-    mapFilterFeaturesElement.removeAttribute('disabled');
-    fieldsetAdHeaderElement.removeAttribute('disabled');
-    removeDisableAttr(mapFilterInputs);
-    removeDisableAttr(fieldsetAdText);
-
+  var getPins = function () {
     window.load.loadAdsData(function (ads) {
       advertisements = ads;
       window.advertisements = advertisements;
@@ -57,8 +47,27 @@
     window.load.errorLoadHandler);
   };
 
+  var unsuccessLoadHandler = function () {
+    getPins();
+    mapPinMainElement.removeEventListener('click', unsuccessLoadHandler);
+  };
+
+  /**
+    Функция активации карты и формы
+    */
+  var switchToActiveState = function () {
+    mapElement.classList.remove('map--faded');
+    adFormElement.classList.remove('ad-form--disabled');
+    mapFilterFeaturesElement.removeAttribute('disabled');
+    fieldsetAdHeaderElement.removeAttribute('disabled');
+    removeDisableAttr(mapFilterInputs);
+    removeDisableAttr(fieldsetAdText);
+
+    getPins();
+  };
+
   var pinClickActivateMapHandler = function (evt) {
-    if ((evt.button === 0) && (adFormElement.classList.contains('ad-form--disabled'))) {
+    if (evt.button === 0) {
       switchToActiveState();
       window.form.getAddress();
     }
@@ -95,7 +104,6 @@
 
     var pinDragMouseupHandler = function (upEvt) {
       upEvt.preventDefault();
-      window.form.getAddress();
 
       document.removeEventListener('mousemove', pinDragMousemoveHandler);
       document.removeEventListener('mouseup', pinDragMouseupHandler);
@@ -158,6 +166,8 @@
   window.map = {
     ADS_AMOUNT: ADS_AMOUNT,
     mapPinsListElement: mapPinsListElement,
+    mapPinMainElement: mapPinMainElement,
+    unsuccessLoadHandler: unsuccessLoadHandler,
     switchToInactiveState: switchToInactiveState,
     removePins: removePins,
     removeCard: removeCard,

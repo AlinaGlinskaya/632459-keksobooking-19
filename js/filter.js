@@ -11,6 +11,13 @@
   var houseRoomSelectElement = filterFormElement.querySelector('#housing-rooms');
   var houseGuestSelectElement = filterFormElement.querySelector('#housing-guests');
 
+  window.switchFilterToInactiveState = function () {
+    houseTypeSelectElement.setAttribute('disabled', '');
+    housePriceSelectElement.setAttribute('disabled', '');
+    houseRoomSelectElement.setAttribute('disabled', '');
+    houseGuestSelectElement.setAttribute('disabled', '');
+  };
+
   /**
     Функция установки соответствия цены из объекта данных значениям селекта
     * @param {number} price - цена из объекта данных объявления
