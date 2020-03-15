@@ -67,7 +67,7 @@
   };
 
   var pinClickActivateMapHandler = function (evt) {
-    if (evt.button === 0) {
+    if (evt.button === 0 && mapElement.classList.contains('map--faded')) {
       switchToActiveState();
       window.form.getAddress();
     }
@@ -111,6 +111,7 @@
 
     document.addEventListener('mousemove', pinDragMousemoveHandler);
     document.addEventListener('mouseup', pinDragMouseupHandler);
+
   };
 
   var pinKeydownActivateMapHandler = function (evt) {

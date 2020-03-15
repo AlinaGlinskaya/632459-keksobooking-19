@@ -18,7 +18,8 @@
   var addressInputElement = adFormElement.querySelector('#address');
   var mapPinMainElement = document.querySelector('.map__pin--main');
   var resetButtonElement = adFormElement.querySelector('.ad-form__reset');
-
+  var inputTitleElement = adFormElement.querySelector('input[name=title]');
+  var inputPriceElement = adFormElement.querySelector('input[name=price]');
 
   /**
     Функция проверки соответствия количества гостей и количества комнат
@@ -28,32 +29,40 @@
       case '1':
         if (guestSelectElement.value === '3' || guestSelectElement.value === '2' || guestSelectElement.value === '0') {
           roomSelectElement.setCustomValidity('Только для 1 гостя');
+          highLightInvalidField(roomSelectElement);
         } else {
           roomSelectElement.setCustomValidity('');
+          removeFieldHighLight(roomSelectElement);
         }
         break;
 
       case '2':
         if (guestSelectElement.value === '3' || guestSelectElement.value === '0') {
           roomSelectElement.setCustomValidity('Только для 1-го или 2-х гостей');
+          highLightInvalidField(roomSelectElement);
         } else {
           roomSelectElement.setCustomValidity('');
+          removeFieldHighLight(roomSelectElement);
         }
         break;
 
       case '3':
         if (guestSelectElement.value === '0') {
           roomSelectElement.setCustomValidity('Только для 1-го, 2-х или 3-х гостей');
+          highLightInvalidField(roomSelectElement);
         } else {
           roomSelectElement.setCustomValidity('');
+          removeFieldHighLight(roomSelectElement);
         }
         break;
 
       case '100':
         if (guestSelectElement.value !== '0') {
           roomSelectElement.setCustomValidity('Не для гостей');
+          highLightInvalidField(roomSelectElement);
         } else {
           roomSelectElement.setCustomValidity('');
+          removeFieldHighLight(roomSelectElement);
         }
         break;
 
@@ -131,22 +140,16 @@
     Функция подсветки невалидных полей
     * @param {object} field - поле формы
     */
-  var highLightInvalidFields = function (field) {
-    debugger;
-    var invalidFields = [];
-    if (!field.validity.valid) {
-      invalidFields.push(field);
-      invalidFields.forEach(function () {
-        field.style = 'border: 2px solid red';
-      });
-    } else {
-      field.style = 'border: none';
-    }
+  var highLightInvalidField = function (field) {
+    field.style = 'border: 2px solid red';
   };
 
-  var invalidFormHandler = function (evt) {
-    var field = evt.target;
-    highLightInvalidFields(field);
+  /**
+    Функция удаления подсветки полей
+    * @param {object} field - поле формы
+    */
+  var removeFieldHighLight = function (field) {
+    field.style = 'border: none';
   };
 
   var resetButtonClickHandler = function () {
@@ -174,7 +177,23 @@
     setMinPrice();
   });
 
-  adFormElement.addEventListener('change', invalidFormHandler);
+  // Подсветка невалидных полей
+  inputTitleElement.addEventListener('invalid', function () {
+    highLightInvalidField(inputTitleElement);
+  });
+
+  inputPriceElement.addEventListener('invalid', function () {
+    highLightInvalidField(inputPriceElement);
+  });
+
+  inputTitleElement.addEventListener('change', function () {
+    removeFieldHighLight(inputTitleElement);
+  });
+
+  inputPriceElement.addEventListener('change', function () {
+    removeFieldHighLight(inputPriceElement);
+  });
+
 
   adFormElement.addEventListener('submit', function (evt) {
     window.load.uploadAdData(new FormData(adFormElement), function () {
