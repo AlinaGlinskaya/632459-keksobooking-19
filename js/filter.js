@@ -11,6 +11,11 @@
   var houseRoomSelectElement = filterFormElement.querySelector('#housing-rooms');
   var houseGuestSelectElement = filterFormElement.querySelector('#housing-guests');
 
+  /**
+    Функция установки соответствия цены из объекта данных значениям селекта
+    * @param {number} price - цена из объекта данных объявления
+    * @return {selectValue} значение селекта
+    */
   var getPriceRange = function (price) {
     var selectValue;
     switch (true) {
@@ -23,10 +28,16 @@
       case price >= HIGH_PRICE:
         selectValue = 'high';
         break;
+      default:
+        selectValue = 'any';
+        break;
     }
     return selectValue;
   };
 
+  /**
+    Метод отрисовки похожих объявлений
+    */
   var filterInputChangeHandler = function () {
     var ads = [];
     window.map.removePins();
@@ -70,12 +81,17 @@
 
     var fragment = document.createDocumentFragment();
     for (var a = 0; a < ads.length && a < window.map.ADS_AMOUNT; a++) {
-      fragment.appendChild(window.pin.createPin(ads[a]));
+      var pin = window.pin.createPin(ads[a]);
+      fragment.appendChild(pin);
     }
-    window.map.mapPinsListElement.appendChild(fragment);
+
+
+    window.debounce(window.map.mapPinsListElement.appendChild(fragment));
+
   };
 
   filterFormElement.addEventListener('change', filterInputChangeHandler);
+
 
 })();
 

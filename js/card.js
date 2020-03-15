@@ -30,6 +30,19 @@
     }
   };
 
+  /**
+  * @param {object} cardData - объект с данными объявления
+  * @param {object} featuresList - элемент, в который добавляются features
+  */
+  var createFeatureList = function (cardData, featuresList) {
+    cardData.offer.features.forEach(function (id) {
+      var featureItem = document.createElement('li');
+      featureItem.classList.add('popup__feature');
+      featureItem.classList.add('popup__feature--' + id);
+      featuresList.appendChild(featureItem);
+    });
+  };
+
   var adCardCloseKeydownHandler = function (evt) {
     if (evt.key === ESC_KEY) {
       var adCard = document.querySelector('.map__card');
@@ -38,6 +51,11 @@
     }
   };
 
+  /**
+    Метод отрисовки карточки
+    * @param {object} card - объект с данными объявления
+    * @return {object} карточка объявления
+    */
   window.createCard = function (card) {
     var cardElement = cardTemplate.cloneNode(true);
     cardElement.querySelector('.popup__title').textContent = card.offer.title;
@@ -46,12 +64,11 @@
     cardElement.querySelector('.popup__type').textContent = HouseType[card.offer.type.toUpperCase()];
     cardElement.querySelector('.popup__text--capacity').textContent = card.offer.rooms + ' комнаты для ' + card.offer.guests + ' гостей';
     cardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + card.offer.checkin + ', выезд до ' + card.offer.checkout;
-    cardElement.querySelector('.popup__features').innerHTML = '';
-    for (var i = 0; i < (card.offer.features).length; i++) {
-      var featureItem = document.createElement('li');
-      featureItem.textContent = card.offer.features[i];
-      cardElement.querySelector('.popup__features').appendChild(featureItem);
-    }
+
+    var featuresListElement = cardElement.querySelector('.popup__features');
+    featuresListElement.innerHTML = '';
+    createFeatureList(card, featuresListElement);
+
     cardElement.querySelector('.popup__description').textContent = card.offer.description;
     cardElement.querySelector('img').src = card.author.avatar;
 
@@ -59,6 +76,8 @@
     adCloseButton.addEventListener('click', function () {
       cardElement.remove();
       document.removeEventListener('keydown', adCardCloseKeydownHandler);
+      var pinActiveElement = document.querySelector('.map__pin--active');
+      pinActiveElement.classList.remove('map__pin--active');
     });
 
     document.addEventListener('keydown', adCardCloseKeydownHandler);

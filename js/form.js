@@ -19,6 +19,10 @@
   var mapPinMainElement = document.querySelector('.map__pin--main');
   var resetButtonElement = adFormElement.querySelector('.ad-form__reset');
 
+
+  /**
+    Функция проверки соответствия количества гостей и количества комнат
+    */
   var checkCapacity = function () {
     switch (roomSelectElement.value) {
       case '1':
@@ -52,9 +56,18 @@
           roomSelectElement.setCustomValidity('');
         }
         break;
+
+      default:
+        roomSelectElement.setCustomValidity('');
+        break;
     }
   };
 
+  /**
+    Функция синхронизации времени заезда и выезда
+    * @param {object} select - значение первого селекта
+    * @param {object} option - значение второго селекта
+    */
   var changeTimeOption = function (select, option) {
     switch (select.value) {
       case CheckinTime[12]:
@@ -66,9 +79,15 @@
       case CheckinTime[14]:
         option.value = '14:00';
         break;
+      default:
+        option.value = '12:00';
+        break;
     }
   };
 
+  /**
+    Функция установки минимальной цены в зависимости от выбранного типа жилья
+    */
   var setMinPrice = function () {
     switch (houseTypeSelectElement.value) {
       case 'bungalo':
@@ -87,11 +106,14 @@
         priceInputElement.setAttribute('min', '10000');
         priceInputElement.placeholder = '10000';
         break;
+      default:
+        priceInputElement.placeholder = '1000';
+        break;
     }
   };
 
   /**
-    Заполняет поле «адрес» в формате: «координата по оси X, координата по оси Y»
+    Функция заполняет поле «адрес» в формате: «координата по оси X, координата по оси Y»
     */
   var getAddress = function () {
     var x = mapPinMainElement.offsetLeft;

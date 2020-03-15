@@ -4,11 +4,19 @@
 
   var ESC_KEY = 'Escape';
   var TIMEOUT_IN_MS = 10000;
-  var LOAD_URL = 'https://js.dump.academy/keksobooking/data';
-  var UPLOAD_URL = 'https://js.dump.academy/keksobooking';
 
   var StatusCode = {
     OK: 200
+  };
+
+  var RequestMethod = {
+    GET: 'GET',
+    POST: 'POST',
+  };
+
+  var ServerUrl = {
+    LOAD: 'https://js.dump.academy/keksobooking/data',
+    UPLOAD: 'https://js.dump.academy/keksobooking',
   };
 
   var successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
@@ -37,7 +45,7 @@
 
     xhr.timeout = TIMEOUT_IN_MS;
 
-    xhr.open('GET', LOAD_URL);
+    xhr.open(RequestMethod.GET, ServerUrl.LOAD);
     xhr.send();
   };
 
@@ -57,7 +65,7 @@
       onError('Произошла ошибка соединения');
     });
 
-    xhr.open('POST', UPLOAD_URL);
+    xhr.open(RequestMethod.POST, ServerUrl.UPLOAD);
     xhr.send(data);
   };
 
