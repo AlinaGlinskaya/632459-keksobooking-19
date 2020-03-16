@@ -3,18 +3,32 @@
 (function () {
 
   var ESC_KEY = 'Escape';
+  var TIMEOUT_IN_MS = 10000;
+
+  var StatusCode = {
+    OK: 200
+  };
+
+  var RequestMethod = {
+    GET: 'GET',
+    POST: 'POST',
+  };
+
+  var ServerUrl = {
+    LOAD: 'https://js.dump.academy/keksobooking/data',
+    UPLOAD: 'https://js.dump.academy/keksobooking',
+  };
 
   var successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
   var errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
-  var main = document.querySelector('main');
+  var mainElement = document.querySelector('main');
 
   var loadAdsData = function (onSuccess, onError) {
-    var URL = 'https://js.dump.academy/keksobooking/data';
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === StatusCode.OK) {
         onSuccess(xhr.response);
       } else {
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
@@ -29,19 +43,18 @@
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    xhr.timeout = 10000;
+    xhr.timeout = TIMEOUT_IN_MS;
 
-    xhr.open('GET', URL);
+    xhr.open(RequestMethod.GET, ServerUrl.LOAD);
     xhr.send();
   };
 
   var uploadAdData = function (data, onSuccess, onError) {
-    var URL = 'https://js.dump.academy/keksobooking';
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === StatusCode.OK) {
         onSuccess(xhr.response);
       } else {
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
@@ -52,20 +65,20 @@
       onError('Произошла ошибка соединения');
     });
 
-    xhr.open('POST', URL);
+    xhr.open(RequestMethod.POST, ServerUrl.UPLOAD);
     xhr.send(data);
   };
 
   var successHandler = function () {
     var successMessage = successMessageTemplate.cloneNode(true);
-    main.appendChild(successMessage);
+    mainElement.appendChild(successMessage);
     document.addEventListener('keydown', successMessageKeydownHandler);
     document.addEventListener('click', successMessageClickHandler);
   };
 
   var errorUploadHandler = function () {
     var errorMessage = errorMessageTemplate.cloneNode(true);
-    main.appendChild(errorMessage);
+    mainElement.appendChild(errorMessage);
     document.addEventListener('keydown', errorMessageKeydownHandler);
     document.addEventListener('click', errorMessageClickHandler);
     var errorMessageElement = document.querySelector('.error');
@@ -77,13 +90,14 @@
     var errorMessage = errorMessageTemplate.cloneNode(true);
     var errorMessageText = errorMessage.querySelector('.error__message');
     errorMessageText.textContent = errorText;
-    main.appendChild(errorMessage);
+    mainElement.appendChild(errorMessage);
     document.addEventListener('click', errorMessageClickHandler);
     document.addEventListener('keydown', errorMessageKeydownHandler);
     var errorMessageElement = document.querySelector('.error');
     var errorButton = errorMessageElement.querySelector('.error__button');
     errorButton.addEventListener('click', errorButtonClickHandler);
-    window.filter.inactivateFilter();
+    window.switchFilterToInactiveState();
+    window.map.mapPinMainElement.addEventListener('click', window.map.unsuccessLoadHandler);
   };
 
   var errorMessageKeydownHandler = function (evt) {

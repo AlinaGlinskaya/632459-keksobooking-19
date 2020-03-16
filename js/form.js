@@ -1,106 +1,160 @@
 'use strict';
 
 (function () {
-  var adForm = document.querySelector('.ad-form');
-  var roomSelectElement = adForm.querySelector('#room_number');
-  var guestSelectElement = adForm.querySelector('#capacity');
-  var timeInSelectElement = adForm.querySelector('#timein');
-  var timeOutSelectElement = adForm.querySelector('#timeout');
-  var houseTypeSelectElement = adForm.querySelector('#type');
-  var priceInput = adForm.querySelector('#price');
-  var addressInput = adForm.querySelector('#address');
-  var mapPinMain = document.querySelector('.map__pin--main');
-  var resetButton = adForm.querySelector('.ad-form__reset');
 
+  var CheckinTime = {
+    '12': '12:00',
+    '13': '13:00',
+    '14': '14:00',
+  };
+
+  var adFormElement = document.querySelector('.ad-form');
+  var roomSelectElement = adFormElement.querySelector('#room_number');
+  var guestSelectElement = adFormElement.querySelector('#capacity');
+  var timeInSelectElement = adFormElement.querySelector('#timein');
+  var timeOutSelectElement = adFormElement.querySelector('#timeout');
+  var houseTypeSelectElement = adFormElement.querySelector('#type');
+  var priceInputElement = adFormElement.querySelector('#price');
+  var addressInputElement = adFormElement.querySelector('#address');
+  var mapPinMainElement = document.querySelector('.map__pin--main');
+  var resetButtonElement = adFormElement.querySelector('.ad-form__reset');
+  var inputTitleElement = adFormElement.querySelector('input[name=title]');
+  var inputPriceElement = adFormElement.querySelector('input[name=price]');
+
+  /**
+    Функция проверки соответствия количества гостей и количества комнат
+    */
   var checkCapacity = function () {
     switch (roomSelectElement.value) {
       case '1':
         if (guestSelectElement.value === '3' || guestSelectElement.value === '2' || guestSelectElement.value === '0') {
           roomSelectElement.setCustomValidity('Только для 1 гостя');
+          highLightInvalidField(roomSelectElement);
         } else {
           roomSelectElement.setCustomValidity('');
+          removeFieldHighLight(roomSelectElement);
         }
         break;
 
       case '2':
         if (guestSelectElement.value === '3' || guestSelectElement.value === '0') {
           roomSelectElement.setCustomValidity('Только для 1-го или 2-х гостей');
+          highLightInvalidField(roomSelectElement);
         } else {
           roomSelectElement.setCustomValidity('');
+          removeFieldHighLight(roomSelectElement);
         }
         break;
 
       case '3':
         if (guestSelectElement.value === '0') {
           roomSelectElement.setCustomValidity('Только для 1-го, 2-х или 3-х гостей');
+          highLightInvalidField(roomSelectElement);
         } else {
           roomSelectElement.setCustomValidity('');
+          removeFieldHighLight(roomSelectElement);
         }
         break;
 
       case '100':
         if (guestSelectElement.value !== '0') {
           roomSelectElement.setCustomValidity('Не для гостей');
+          highLightInvalidField(roomSelectElement);
         } else {
           roomSelectElement.setCustomValidity('');
+          removeFieldHighLight(roomSelectElement);
         }
         break;
-    }
-  };
 
-  var changeTimeOption = function (select, option) {
-    switch (select.value) {
-      case '12:00':
-        option.value = '12:00';
-        break;
-      case '13:00':
-        option.value = '13:00';
-        break;
-      case '14:00':
-        option.value = '14:00';
-        break;
-    }
-  };
-
-  var setMinPrice = function () {
-    switch (houseTypeSelectElement.value) {
-      case 'bungalo':
-        priceInput.setAttribute('min', '0');
-        priceInput.placeholder = '0';
-        break;
-      case 'flat':
-        priceInput.setAttribute('min', '1000');
-        priceInput.placeholder = '1000';
-        break;
-      case 'house':
-        priceInput.setAttribute('min', '5000');
-        priceInput.placeholder = '5000';
-        break;
-      case 'palace':
-        priceInput.setAttribute('min', '10000');
-        priceInput.placeholder = '10000';
+      default:
+        roomSelectElement.setCustomValidity('');
         break;
     }
   };
 
   /**
-    Заполняет поле «адрес» в формате: «координата по оси X, координата по оси Y»
+    Функция синхронизации времени заезда и выезда
+    * @param {object} select - значение первого селекта
+    * @param {object} option - значение второго селекта
     */
-  var getAddress = function () {
-    var x = mapPinMain.offsetLeft;
-    var pinMainX = x + window.pin.pinMainWidth / 2;
-    var y = mapPinMain.offsetTop;
-    var pinMainY = y + window.pin.pinMainHeight;
-    if (adForm.classList.contains('ad-form--disabled')) {
-      addressInput.value = Math.round(pinMainX) + ', ' + Math.round(pinMainY - window.pin.pinMainHeight / 2);
-    } else {
-      addressInput.value = Math.round(pinMainX) + ', ' + Math.round(pinMainY);
+  var changeTimeOption = function (select, option) {
+    switch (select.value) {
+      case CheckinTime[12]:
+        option.value = '12:00';
+        break;
+      case CheckinTime[13]:
+        option.value = '13:00';
+        break;
+      case CheckinTime[14]:
+        option.value = '14:00';
+        break;
+      default:
+        option.value = '12:00';
+        break;
     }
   };
 
+  /**
+    Функция установки минимальной цены в зависимости от выбранного типа жилья
+    */
+  var setMinPrice = function () {
+    switch (houseTypeSelectElement.value) {
+      case 'bungalo':
+        priceInputElement.setAttribute('min', '0');
+        priceInputElement.placeholder = '0';
+        break;
+      case 'flat':
+        priceInputElement.setAttribute('min', '1000');
+        priceInputElement.placeholder = '1000';
+        break;
+      case 'house':
+        priceInputElement.setAttribute('min', '5000');
+        priceInputElement.placeholder = '5000';
+        break;
+      case 'palace':
+        priceInputElement.setAttribute('min', '10000');
+        priceInputElement.placeholder = '10000';
+        break;
+      default:
+        priceInputElement.placeholder = '1000';
+        break;
+    }
+  };
+
+  /**
+    Функция заполняет поле «адрес» в формате: «координата по оси X, координата по оси Y»
+    */
+  var getAddress = function () {
+    var x = mapPinMainElement.offsetLeft;
+    var pinMainX = x + window.pin.pinMainWidth / 2;
+    var y = mapPinMainElement.offsetTop;
+    var pinMainY = y + window.pin.pinMainHeight;
+    if (adFormElement.classList.contains('ad-form--disabled')) {
+      addressInputElement.value = Math.round(pinMainX) + ', ' + Math.round(pinMainY - window.pin.pinMainHeight / 2);
+    } else {
+      addressInputElement.value = Math.round(pinMainX) + ', ' + Math.round(pinMainY);
+    }
+  };
+
+  /**
+    Функция подсветки невалидных полей
+    * @param {object} field - поле формы
+    */
+  var highLightInvalidField = function (field) {
+    field.style = 'border: 2px solid red';
+  };
+
+  /**
+    Функция удаления подсветки полей
+    * @param {object} field - поле формы
+    */
+  var removeFieldHighLight = function (field) {
+    field.style = 'border: none';
+  };
+
   var resetButtonClickHandler = function () {
-    window.switchToInactiveState();
-    resetButton.removeEventListener('click', resetButtonClickHandler);
+    window.map.switchToInactiveState();
+    resetButtonElement.removeEventListener('click', resetButtonClickHandler);
   };
 
   roomSelectElement.addEventListener('change', function () {
@@ -123,9 +177,27 @@
     setMinPrice();
   });
 
-  adForm.addEventListener('submit', function (evt) {
-    window.load.uploadAdData(new FormData(adForm), function () {
-      window.switchToInactiveState();
+  // Подсветка невалидных полей
+  inputTitleElement.addEventListener('invalid', function () {
+    highLightInvalidField(inputTitleElement);
+  });
+
+  inputPriceElement.addEventListener('invalid', function () {
+    highLightInvalidField(inputPriceElement);
+  });
+
+  inputTitleElement.addEventListener('change', function () {
+    removeFieldHighLight(inputTitleElement);
+  });
+
+  inputPriceElement.addEventListener('change', function () {
+    removeFieldHighLight(inputPriceElement);
+  });
+
+
+  adFormElement.addEventListener('submit', function (evt) {
+    window.load.uploadAdData(new FormData(adFormElement), function () {
+      window.map.switchToInactiveState();
       window.load.successHandler();
     },
     function () {
@@ -136,7 +208,7 @@
 
   getAddress();
 
-  resetButton.addEventListener('click', function () {
+  resetButtonElement.addEventListener('click', function () {
     resetButtonClickHandler();
   });
 
