@@ -29,7 +29,6 @@
       case '1':
         if (guestSelectElement.value === '3' || guestSelectElement.value === '2' || guestSelectElement.value === '0') {
           roomSelectElement.setCustomValidity('Только для 1 гостя');
-          highLightInvalidField(roomSelectElement);
         } else {
           roomSelectElement.setCustomValidity('');
           removeFieldHighLight(roomSelectElement);
@@ -39,7 +38,6 @@
       case '2':
         if (guestSelectElement.value === '3' || guestSelectElement.value === '0') {
           roomSelectElement.setCustomValidity('Только для 1-го или 2-х гостей');
-          highLightInvalidField(roomSelectElement);
         } else {
           roomSelectElement.setCustomValidity('');
           removeFieldHighLight(roomSelectElement);
@@ -49,7 +47,6 @@
       case '3':
         if (guestSelectElement.value === '0') {
           roomSelectElement.setCustomValidity('Только для 1-го, 2-х или 3-х гостей');
-          highLightInvalidField(roomSelectElement);
         } else {
           roomSelectElement.setCustomValidity('');
           removeFieldHighLight(roomSelectElement);
@@ -59,7 +56,6 @@
       case '100':
         if (guestSelectElement.value !== '0') {
           roomSelectElement.setCustomValidity('Не для гостей');
-          highLightInvalidField(roomSelectElement);
         } else {
           roomSelectElement.setCustomValidity('');
           removeFieldHighLight(roomSelectElement);
@@ -194,6 +190,14 @@
     removeFieldHighLight(inputPriceElement);
   });
 
+  roomSelectElement.addEventListener('invalid', function () {
+    highLightInvalidField(roomSelectElement);
+  });
+
+  guestSelectElement.addEventListener('invalid', function () {
+    highLightInvalidField(guestSelectElement);
+  });
+
 
   adFormElement.addEventListener('submit', function (evt) {
     window.load.uploadAdData(new FormData(adFormElement), function () {
@@ -214,5 +218,6 @@
 
   window.form = {
     getAddress: getAddress,
+    checkCapacity: checkCapacity,
   };
 })();

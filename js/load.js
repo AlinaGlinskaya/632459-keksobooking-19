@@ -136,6 +136,7 @@
     var successMessageElement = document.querySelector('.success');
     successMessageElement.remove();
     document.removeEventListener('click', successMessageClickHandler);
+    document.removeEventListener('keydown', successMessageKeydownHandler);
   };
 
   window.load = {

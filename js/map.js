@@ -64,6 +64,8 @@
     removeDisableAttr(fieldsetAdText);
 
     getPins();
+
+    window.form.checkCapacity();
   };
 
   var pinClickActivateMapHandler = function (evt) {

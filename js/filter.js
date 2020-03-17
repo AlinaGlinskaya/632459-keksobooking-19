@@ -45,7 +45,7 @@
   /**
     Метод отрисовки похожих объявлений
     */
-  var filterInputChangeHandler = function () {
+  var filterAds = function () {
     var ads = [];
     window.map.removePins();
     window.map.removeCard();
@@ -92,13 +92,15 @@
       fragment.appendChild(pin);
     }
 
-
-    window.debounce(window.map.mapPinsListElement.appendChild(fragment));
+    window.map.mapPinsListElement.appendChild(fragment);
 
   };
 
-  filterFormElement.addEventListener('change', filterInputChangeHandler);
+  var filterAdsWithDebounce = window.debounce(filterAds);
 
+  filterFormElement.addEventListener('change', function () {
+    filterAdsWithDebounce();
+  });
 
 })();
 
