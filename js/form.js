@@ -2,10 +2,17 @@
 
 (function () {
 
-  var CheckinTime = {
-    '12': '12:00',
-    '13': '13:00',
-    '14': '14:00',
+  var Time = {
+    TWELVE: '12:00',
+    ONE: '13:00',
+    TWO: '14:00',
+  };
+
+  var MinPrice = {
+    FOR_BUNGALO: '0',
+    FOR_FLAT: '1000',
+    FOR_HOUSE: '5000',
+    FOR_PALACE: '10000',
   };
 
   var adFormElement = document.querySelector('.ad-form');
@@ -75,17 +82,17 @@
     */
   var changeTimeOption = function (select, option) {
     switch (select.value) {
-      case CheckinTime[12]:
-        option.value = '12:00';
+      case Time.TWELVE:
+        option.value = Time.TWELVE;
         break;
-      case CheckinTime[13]:
-        option.value = '13:00';
+      case Time.ONE:
+        option.value = Time.ONE;
         break;
-      case CheckinTime[14]:
-        option.value = '14:00';
+      case Time.TWO:
+        option.value = Time.TWO;
         break;
       default:
-        option.value = '12:00';
+        option.value = Time.TWELVE;
         break;
     }
   };
@@ -96,23 +103,23 @@
   var setMinPrice = function () {
     switch (houseTypeSelectElement.value) {
       case 'bungalo':
-        priceInputElement.setAttribute('min', '0');
-        priceInputElement.placeholder = '0';
+        priceInputElement.setAttribute('min', MinPrice.FOR_BUNGALO);
+        priceInputElement.placeholder = MinPrice.FOR_BUNGALO;
         break;
       case 'flat':
-        priceInputElement.setAttribute('min', '1000');
-        priceInputElement.placeholder = '1000';
+        priceInputElement.setAttribute('min', MinPrice.FOR_FLAT);
+        priceInputElement.placeholder = MinPrice.FOR_FLAT;
         break;
       case 'house':
-        priceInputElement.setAttribute('min', '5000');
-        priceInputElement.placeholder = '5000';
+        priceInputElement.setAttribute('min', MinPrice.FOR_HOUSE);
+        priceInputElement.placeholder = MinPrice.FOR_HOUSE;
         break;
       case 'palace':
-        priceInputElement.setAttribute('min', '10000');
-        priceInputElement.placeholder = '10000';
+        priceInputElement.setAttribute('min', MinPrice.FOR_PALACE);
+        priceInputElement.placeholder = MinPrice.FOR_PALACE;
         break;
       default:
-        priceInputElement.placeholder = '1000';
+        priceInputElement.placeholder = MinPrice.FOR_FLAT;
         break;
     }
   };
@@ -219,5 +226,6 @@
   window.form = {
     getAddress: getAddress,
     checkCapacity: checkCapacity,
+    setMinPrice: setMinPrice,
   };
 })();

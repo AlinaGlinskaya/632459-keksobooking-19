@@ -23,7 +23,7 @@
   var errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
   var mainElement = document.querySelector('main');
 
-  var loadAdsData = function (onSuccess, onError) {
+  var getAdsData = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
@@ -96,7 +96,7 @@
     var errorMessageElement = document.querySelector('.error');
     var errorButton = errorMessageElement.querySelector('.error__button');
     errorButton.addEventListener('click', errorButtonClickHandler);
-    window.switchFilterToInactiveState();
+    window.filter.switchSelectsToInactiveState();
     window.map.mapPinMainElement.addEventListener('click', window.map.unsuccessLoadHandler);
   };
 
@@ -140,7 +140,7 @@
   };
 
   window.load = {
-    loadAdsData: loadAdsData,
+    getAdsData: getAdsData,
     uploadAdData: uploadAdData,
     successHandler: successHandler,
     errorUploadHandler: errorUploadHandler,

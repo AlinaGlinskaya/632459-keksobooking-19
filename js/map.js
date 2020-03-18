@@ -35,7 +35,7 @@
   };
 
   var getPins = function () {
-    window.load.loadAdsData(function (ads) {
+    window.load.getAdsData(function (ads) {
       advertisements = ads;
       window.advertisements = advertisements;
       var fragment = document.createDocumentFragment();
@@ -66,6 +66,7 @@
     getPins();
 
     window.form.checkCapacity();
+    window.form.setMinPrice();
   };
 
   var pinClickActivateMapHandler = function (evt) {
@@ -94,7 +95,7 @@
       };
 
       var newOffsetTop = mapPinMainElement.offsetTop - shift.y;
-      if ((newOffsetTop + mapPinMainElement.clientHeight) > LIMIT_TOP && (newOffsetTop + mapPinMainElement.clientHeight) < LIMIT_BOTTOM) {
+      if ((newOffsetTop + mapPinMainElement.clientHeight) >= LIMIT_TOP && (newOffsetTop + mapPinMainElement.clientHeight) <= LIMIT_BOTTOM) {
         mapPinMainElement.style.top = newOffsetTop + 'px';
       }
 

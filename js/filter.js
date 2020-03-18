@@ -11,7 +11,7 @@
   var houseRoomSelectElement = filterFormElement.querySelector('#housing-rooms');
   var houseGuestSelectElement = filterFormElement.querySelector('#housing-guests');
 
-  window.switchFilterToInactiveState = function () {
+  var switchSelectsToInactiveState = function () {
     houseTypeSelectElement.setAttribute('disabled', '');
     housePriceSelectElement.setAttribute('disabled', '');
     houseRoomSelectElement.setAttribute('disabled', '');
@@ -101,6 +101,10 @@
   filterFormElement.addEventListener('change', function () {
     filterAdsWithDebounce();
   });
+
+  window.filter = {
+    switchSelectsToInactiveState: switchSelectsToInactiveState,
+  };
 
 })();
 

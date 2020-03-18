@@ -13,6 +13,16 @@
     'HOUSE': 'Дом'
   };
 
+  var RoomAmount = {
+    NO_ROOMS: 0,
+    ONE_ROOM: 1,
+    MANY_ROOMS: 4,
+  };
+
+  var GuestAmount = {
+    ONE_GUEST: 1,
+  };
+
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
   /**
@@ -45,18 +55,19 @@
 
 
   var setConformityForGuests = function (card) {
-    if (card.offer.guests === 1) {
+    if (card.offer.guests === GuestAmount.ONE_GUEST) {
       return ' гостя';
     }
     return ' гостей';
   };
 
   var setConformityForRooms = function (card) {
-    if (card.offer.rooms === 1) {
+    if (card.offer.rooms === RoomAmount.ONE_ROOM) {
       return ' комната для ';
-    } else {
-      return (card.offer.rooms > 4 || card.offer.rooms === 0) ? ' комнат для ' : ' комнаты для ';
     }
+
+    return (card.offer.rooms > RoomAmount.MANY_ROOMS || card.offer.rooms === RoomAmount.NO_ROOMS) ? ' комнат для ' : ' комнаты для ';
+
   };
 
   var adCardCloseKeydownHandler = function (evt) {
@@ -72,7 +83,7 @@
     * @param {object} card - объект с данными объявления
     * @return {object} карточка объявления
     */
-  window.createCard = function (card) {
+  var createCard = function (card) {
     var cardElement = cardTemplate.cloneNode(true);
     cardElement.querySelector('.popup__title').textContent = card.offer.title;
     cardElement.querySelector('.popup__text--address').textContent = card.offer.address;
@@ -102,5 +113,9 @@
     photoListElement.innerHTML = '';
     createPhoto(card, photoListElement);
     return cardElement;
+  };
+
+  window.card = {
+    createCard: createCard,
   };
 })();

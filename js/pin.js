@@ -48,7 +48,7 @@
             adCard.remove();
           }
 
-          mapElement.appendChild(window.createCard(card));
+          mapElement.appendChild(window.card.createCard(card));
 
           pinElement.classList.add('map__pin--active');
         }
