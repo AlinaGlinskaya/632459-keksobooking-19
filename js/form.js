@@ -207,12 +207,12 @@
 
 
   adFormElement.addEventListener('submit', function (evt) {
-    window.load.uploadAdData(new FormData(adFormElement), function () {
+    window.load.sendAdData(new FormData(adFormElement), function () {
       window.map.switchToInactiveState();
-      window.load.successHandler();
+      window.loadMessage.successHandler();
     },
     function () {
-      window.load.errorUploadHandler();
+      window.loadMessage.errorUploadHandler();
     });
     evt.preventDefault();
   });

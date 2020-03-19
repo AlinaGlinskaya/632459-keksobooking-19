@@ -52,39 +52,39 @@
 
     var featuresChecked = filterFormElement.querySelectorAll('input[name=features]:checked');
 
-    for (var i = 0; i < window.advertisements.length; i++) {
+    window.advertisements.forEach(function (item) {
       var type = false;
-      if (houseTypeSelectElement.value === 'any' || window.advertisements[i].offer.type === houseTypeSelectElement.value) {
+      if (houseTypeSelectElement.value === 'any' || item.offer.type === houseTypeSelectElement.value) {
         type = true;
       }
 
       var price = false;
-      if (housePriceSelectElement.value === 'any' || getPriceRange(window.advertisements[i].offer.price) === housePriceSelectElement.value) {
+      if (housePriceSelectElement.value === 'any' || getPriceRange(item.offer.price) === housePriceSelectElement.value) {
         price = true;
       }
 
       var rooms = false;
-      if (houseRoomSelectElement.value === 'any' || window.advertisements[i].offer.rooms === Number(houseRoomSelectElement.value)) {
+      if (houseRoomSelectElement.value === 'any' || item.offer.rooms === Number(houseRoomSelectElement.value)) {
         rooms = true;
       }
 
       var guests = false;
-      if (houseGuestSelectElement.value === 'any' || window.advertisements[i].offer.guests === Number(houseGuestSelectElement.value)) {
+      if (houseGuestSelectElement.value === 'any' || item.offer.guests === Number(houseGuestSelectElement.value)) {
         guests = true;
       }
 
       var features = true;
       for (var j = 0; j < featuresChecked.length; j++) {
-        if (window.advertisements[i].offer.features.indexOf(featuresChecked[j].value) === -1) {
+        if (item.offer.features.indexOf(featuresChecked[j].value) === -1) {
           features = false;
           break;
         }
       }
 
       if (type && price && rooms && guests && features) {
-        ads.push(window.advertisements[i]);
+        ads.push(item);
       }
-    }
+    });
 
     var fragment = document.createDocumentFragment();
     for (var a = 0; a < ads.length && a < window.map.ADS_AMOUNT; a++) {

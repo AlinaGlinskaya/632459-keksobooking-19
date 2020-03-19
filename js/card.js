@@ -31,13 +31,13 @@
   */
   var createPhoto = function (cardData, photoList) {
     var photos = cardData.offer.photos;
-    for (var i = 0; i < photos.length; i++) {
+    photos.forEach(function (item) {
       var img = new Image(PHOTO_WIDTH, PHOTO_HEIGHT);
-      img.src = photos[i];
+      img.src = item;
       img.classList.add('popup__photo');
       img.alt = cardData.offer.title;
       photoList.appendChild(img);
-    }
+    });
   };
 
   /**

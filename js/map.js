@@ -5,7 +5,7 @@
   var ENTER_KEY = 'Enter';
   var LIMIT_TOP = 130;
   var LIMIT_BOTTOM = 630;
-  var LIMIT_LEFT = 0;
+  var LIMIT_LEFT = -1;
   var MAIN_PIN_START_LEFT = 570;
   var MAIN_PIN_START_TOP = 375;
   var ADS_AMOUNT = 5;
@@ -23,15 +23,15 @@
   var advertisements;
 
   var addDisableAttr = function (fields) {
-    for (var i = 0; i < fields.length; i++) {
-      fields[i].setAttribute('disabled', '');
-    }
+    fields.forEach(function (item) {
+      item.setAttribute('disabled', '');
+    });
   };
 
   var removeDisableAttr = function (fields) {
-    for (var i = 0; i < fields.length; i++) {
-      fields[i].removeAttribute('disabled');
-    }
+    fields.forEach(function (item) {
+      item.removeAttribute('disabled');
+    });
   };
 
   var getPins = function () {
@@ -44,7 +44,7 @@
       }
       mapPinsListElement.appendChild(fragment);
     },
-    window.load.errorLoadHandler);
+    window.loadMessage.errorLoadHandler);
   };
 
   var unsuccessLoadHandler = function () {
@@ -128,11 +128,12 @@
 
   var removePins = function () {
     var pins = mapElement.querySelectorAll('.map__pin');
-    for (var i = 0; i < pins.length; i++) {
-      if (!pins[i].classList.contains('map__pin--main')) {
-        pins[i].remove();
+    pins.forEach(function (item) {
+      if (!item.classList.contains('map__pin--main')) {
+        item.remove();
       }
-    }
+    });
+
   };
 
   var removeCard = function () {
