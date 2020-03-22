@@ -17,8 +17,8 @@
   var mapFilterFeaturesElement = document.querySelector('.map__features');
   var fieldsetAdHeaderElement = document.querySelector('.ad-form-header');
   var fieldsetAdText = document.querySelectorAll('.ad-form__element');
-  var mapPinMainElement = document.querySelector('.map__pin--main');
-  var mapPinsListElement = document.querySelector('.map__pins');
+  var pinMainElement = document.querySelector('.map__pin--main');
+  var pinsListElement = document.querySelector('.map__pins');
 
   var advertisements;
 
@@ -37,19 +37,19 @@
   var getPins = function () {
     window.load.getAdsData(function (ads) {
       advertisements = ads;
-      window.advertisements = advertisements;
+      window.map.advertisements = advertisements;
       var fragment = document.createDocumentFragment();
       for (var i = 0; i < ADS_AMOUNT; i++) {
-        fragment.appendChild(window.pin.createPin(ads[i]));
+        fragment.appendChild(window.pin.create(ads[i]));
       }
-      mapPinsListElement.appendChild(fragment);
+      pinsListElement.appendChild(fragment);
     },
-    window.loadMessage.errorLoadHandler);
+    window.backendMessage.errorLoadHandler);
   };
 
   var unsuccessLoadHandler = function () {
     getPins();
-    mapPinMainElement.removeEventListener('click', unsuccessLoadHandler);
+    pinMainElement.removeEventListener('click', unsuccessLoadHandler);
   };
 
   /**
@@ -94,14 +94,14 @@
         y: moveEvt.clientY
       };
 
-      var newOffsetTop = mapPinMainElement.offsetTop - shift.y;
-      if ((newOffsetTop + mapPinMainElement.clientHeight) >= LIMIT_TOP && (newOffsetTop + mapPinMainElement.clientHeight) <= LIMIT_BOTTOM) {
-        mapPinMainElement.style.top = newOffsetTop + 'px';
+      var newOffsetTop = pinMainElement.offsetTop - shift.y;
+      if ((newOffsetTop + pinMainElement.clientHeight) >= LIMIT_TOP && (newOffsetTop + pinMainElement.clientHeight) <= LIMIT_BOTTOM) {
+        pinMainElement.style.top = newOffsetTop + 'px';
       }
 
-      var newoffsetLeft = mapPinMainElement.offsetLeft - shift.x;
-      if (newoffsetLeft > (LIMIT_LEFT - window.pin.pinMainWidth / 2) && newoffsetLeft < (mapWidth - mapPinMainElement.clientWidth / 2)) {
-        mapPinMainElement.style.left = newoffsetLeft + 'px';
+      var newoffsetLeft = pinMainElement.offsetLeft - shift.x;
+      if (newoffsetLeft > (LIMIT_LEFT - window.pin.mainWidth / 2) && newoffsetLeft < (mapWidth - pinMainElement.clientWidth / 2)) {
+        pinMainElement.style.left = newoffsetLeft + 'px';
       }
     };
 
@@ -158,20 +158,20 @@
     mapFilterFeaturesElement.setAttribute('disabled', '');
     fieldsetAdHeaderElement.setAttribute('disabled', '');
 
-    mapPinMainElement.style.left = MAIN_PIN_START_LEFT + 'px';
-    mapPinMainElement.style.top = MAIN_PIN_START_TOP + 'px';
+    pinMainElement.style.left = MAIN_PIN_START_LEFT + 'px';
+    pinMainElement.style.top = MAIN_PIN_START_TOP + 'px';
     window.form.getAddress();
   };
 
-  mapPinMainElement.addEventListener('mousedown', pinClickActivateMapHandler);
-  mapPinMainElement.addEventListener('keydown', pinKeydownActivateMapHandler);
+  pinMainElement.addEventListener('mousedown', pinClickActivateMapHandler);
+  pinMainElement.addEventListener('keydown', pinKeydownActivateMapHandler);
 
   switchToInactiveState();
 
   window.map = {
     ADS_AMOUNT: ADS_AMOUNT,
-    mapPinsListElement: mapPinsListElement,
-    mapPinMainElement: mapPinMainElement,
+    pinsListElement: pinsListElement,
+    pinMainElement: pinMainElement,
     unsuccessLoadHandler: unsuccessLoadHandler,
     switchToInactiveState: switchToInactiveState,
     removePins: removePins,

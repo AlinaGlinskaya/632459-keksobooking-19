@@ -52,7 +52,7 @@
 
     var featuresChecked = filterFormElement.querySelectorAll('input[name=features]:checked');
 
-    window.advertisements.forEach(function (item) {
+    window.map.advertisements.forEach(function (item) {
       var type = false;
       if (houseTypeSelectElement.value === 'any' || item.offer.type === houseTypeSelectElement.value) {
         type = true;
@@ -88,11 +88,11 @@
 
     var fragment = document.createDocumentFragment();
     for (var a = 0; a < ads.length && a < window.map.ADS_AMOUNT; a++) {
-      var pin = window.pin.createPin(ads[a]);
+      var pin = window.pin.create(ads[a]);
       fragment.appendChild(pin);
     }
 
-    window.map.mapPinsListElement.appendChild(fragment);
+    window.map.pinsListElement.appendChild(fragment);
 
   };
 

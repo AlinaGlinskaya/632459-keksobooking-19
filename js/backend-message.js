@@ -36,7 +36,7 @@
     var errorButton = errorMessageElement.querySelector('.error__button');
     errorButton.addEventListener('click', errorButtonClickHandler);
     window.filter.switchSelectsToInactiveState();
-    window.map.mapPinMainElement.addEventListener('click', window.map.unsuccessLoadHandler);
+    window.map.pinMainElement.addEventListener('click', window.map.unsuccessLoadHandler);
   };
 
   var errorMessageKeydownHandler = function (evt) {
@@ -78,7 +78,7 @@
     document.removeEventListener('keydown', successMessageKeydownHandler);
   };
 
-  window.loadMessage = {
+  window.backendMessage = {
     successHandler: successHandler,
     errorLoadHandler: errorLoadHandler,
     errorUploadHandler: errorUploadHandler,

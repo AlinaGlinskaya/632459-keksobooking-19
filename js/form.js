@@ -129,11 +129,11 @@
     */
   var getAddress = function () {
     var x = mapPinMainElement.offsetLeft;
-    var pinMainX = x + window.pin.pinMainWidth / 2;
+    var pinMainX = x + window.pin.mainWidth / 2;
     var y = mapPinMainElement.offsetTop;
-    var pinMainY = y + window.pin.pinMainHeight;
+    var pinMainY = y + window.pin.mainHeight;
     if (adFormElement.classList.contains('ad-form--disabled')) {
-      addressInputElement.value = Math.round(pinMainX) + ', ' + Math.round(pinMainY - window.pin.pinMainHeight / 2);
+      addressInputElement.value = Math.round(pinMainX) + ', ' + Math.round(pinMainY - window.pin.mainHeight / 2);
     } else {
       addressInputElement.value = Math.round(pinMainX) + ', ' + Math.round(pinMainY);
     }
@@ -209,10 +209,10 @@
   adFormElement.addEventListener('submit', function (evt) {
     window.load.sendAdData(new FormData(adFormElement), function () {
       window.map.switchToInactiveState();
-      window.loadMessage.successHandler();
+      window.backendMessage.successHandler();
     },
     function () {
-      window.loadMessage.errorUploadHandler();
+      window.backendMessage.errorUploadHandler();
     });
     evt.preventDefault();
   });

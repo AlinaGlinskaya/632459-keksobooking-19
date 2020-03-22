@@ -48,7 +48,7 @@
             adCard.remove();
           }
 
-          mapElement.appendChild(window.card.createCard(card));
+          mapElement.appendChild(window.card.create(card));
 
           pinElement.classList.add('map__pin--active');
         }
@@ -58,9 +58,9 @@
   };
 
   window.pin = {
-    createPin: createPin,
-    pinMainWidth: pinMainWidth,
-    pinMainHeight: pinMainHeight,
+    create: createPin,
+    mainWidth: pinMainWidth,
+    mainHeight: pinMainHeight,
     adCardCloseKeydownHandler: adCardCloseKeydownHandler,
   };
 })();
