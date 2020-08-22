@@ -14,7 +14,7 @@
   };
 
   var ServerUrl = {
-    LOAD: 'https://js.dump.academy/keksobooking/data',
+    LOAD: 'https://javascript.pages.academy/keksobooking/data',
     UPLOAD: 'https://js.dump.academy/keksobooking',
   };
 
